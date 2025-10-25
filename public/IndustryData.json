@@ -1,0 +1,52 @@
+[
+  {
+    "id": "IND_001",
+    "name": "Technology",
+    "description": "Software, hardware, IT services and technology solutions"
+  },
+  {
+    "id": "IND_002",
+    "name": "Healthcare",
+    "description": "Medical services, pharmaceuticals, healthcare equipment"
+  },
+  {
+    "id": "IND_003", 
+    "name": "Finance & Banking",
+    "description": "Banking, investment, insurance, and financial services"
+  },
+  {
+    "id": "IND_004",
+    "name": "Manufacturing",
+    "description": "Industrial production and manufacturing of goods"
+  },
+  {
+    "id": "IND_005",
+    "name": "Retail & E-commerce",
+    "description": "Consumer goods sales through physical and online stores"
+  },
+  {
+    "id": "IND_006",
+    "name": "Education",
+    "description": "Educational institutions, training, and e-learning services"
+  },
+  {
+    "id": "IND_007",
+    "name": "Real Estate",
+    "description": "Property development, brokerage, and property management"
+  },
+  {
+    "id": "IND_008",
+    "name": "Hospitality & Tourism",
+    "description": "Hotels, restaurants, travel, and tourism services"
+  },
+  {
+    "id": "IND_009",
+    "name": "Energy & Utilities",
+    "description": "Power generation, oil, gas, and utility services"
+  },
+  {
+    "id": "IND_010",
+    "name": "Transportation & Logistics",
+    "description": "Shipping, logistics, supply chain, and transportation services"
+  }
+]

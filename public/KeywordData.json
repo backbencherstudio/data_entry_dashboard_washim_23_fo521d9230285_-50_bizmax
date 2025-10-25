@@ -1,0 +1,34 @@
+[
+  {
+    "id": "IND_001",
+    "name": "Retail"
+  },
+  {
+    "id": "IND_002",
+    "name": "Grocery"
+  },
+  {
+    "id": "IND_003",
+    "name": "Fresh Products"
+  },
+  {
+    "id": "IND_004",
+    "name": "General Merchandise"
+  },
+  {
+    "id": "IND_005",
+    "name": "Manufacturing"
+  },
+  {
+    "id": "IND_006",
+    "name": "Warehousing"
+  },
+  {
+    "id": "IND_007",
+    "name": "Transportation"
+  },
+  {
+    "id": "IND_008",
+    "name": "Product Development"
+  }
+]

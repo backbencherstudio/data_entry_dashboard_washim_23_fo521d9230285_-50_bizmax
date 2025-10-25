@@ -1,0 +1,46 @@
+[
+  {
+    "id": "INT_001",
+    "name": "Amazon SES"
+  },
+  {
+    "id": "INT_002",
+    "name": "DynECT"
+  },
+  {
+    "id": "INT_003",
+    "name": "Outlook"
+  },
+  {
+    "id": "INT_004",
+    "name": "Microsoft Office 365"
+  },
+  {
+    "id": "INT_005",
+    "name": "Drupal"
+  },
+  {
+    "id": "INT_006",
+    "name": "OneTrust"
+  },
+  {
+    "id": "INT_007",
+    "name": "Python"
+  },
+  {
+    "id": "INT_008",
+    "name": "Google Places"
+  },
+  {
+    "id": "INT_009",
+    "name": "Cedexis Radar"
+  },
+  {
+    "id": "INT_010",
+    "name": "Vimeo"
+  },
+  {
+    "id": "INT_011",
+    "name": "Bootstrap"
+  }
+]

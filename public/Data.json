@@ -1,0 +1,42 @@
+[
+  {
+    "id": "JOB_001",
+    "title": "Software Engineer"
+  },
+  {
+    "id": "JOB_002", 
+    "title": "Product Manager"
+  },
+  {
+    "id": "JOB_003",
+    "title": "Data Analyst"
+  },
+  {
+    "id": "JOB_004",
+    "title": "UX Designer"
+  },
+  {
+    "id": "JOB_005",
+    "title": "DevOps Engineer"
+  },
+  {
+    "id": "JOB_006",
+    "title": "Marketing Specialist"
+  },
+  {
+    "id": "JOB_007",
+    "title": "Sales Representative"
+  },
+  {
+    "id": "JOB_008",
+    "title": "HR Manager"
+  },
+  {
+    "id": "JOB_009",
+    "title": "Financial Analyst"
+  },
+  {
+    "id": "JOB_010",
+    "title": "Customer Support Specialist"
+  }
+]
