@@ -1,0 +1,42 @@
+[
+  {
+    "id": "CITY_001",
+    "name": "New York"
+  },
+  {
+    "id": "CITY_002",
+    "name": "London"
+  },
+  {
+    "id": "CITY_003",
+    "name": "Tokyo"
+  },
+  {
+    "id": "CITY_004",
+    "name": "Paris"
+  },
+  {
+    "id": "CITY_005",
+    "name": "Sydney"
+  },
+  {
+    "id": "CITY_006",
+    "name": "Berlin"
+  },
+  {
+    "id": "CITY_007",
+    "name": "Singapore"
+  },
+  {
+    "id": "CITY_008",
+    "name": "Toronto"
+  },
+  {
+    "id": "CITY_009",
+    "name": "Dubai"
+  },
+  {
+    "id": "CITY_010",
+    "name": "Mumbai"
+  }
+]

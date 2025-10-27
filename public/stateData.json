@@ -1,0 +1,42 @@
+[
+  {
+    "id": "STATE_001",
+    "name": "California"
+  },
+  {
+    "id": "STATE_002",
+    "name": "Texas"
+  },
+  {
+    "id": "STATE_003",
+    "name": "New York"
+  },
+  {
+    "id": "STATE_004",
+    "name": "Florida"
+  },
+  {
+    "id": "STATE_005",
+    "name": "Illinois"
+  },
+  {
+    "id": "STATE_006",
+    "name": "Washington"
+  },
+  {
+    "id": "STATE_007",
+    "name": "Massachusetts"
+  },
+  {
+    "id": "STATE_008",
+    "name": "Georgia"
+  },
+  {
+    "id": "STATE_009",
+    "name": "Colorado"
+  },
+  {
+    "id": "STATE_010",
+    "name": "Arizona"
+  }
+]

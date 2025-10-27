@@ -1,13 +1,13 @@
 "use client";
-
+ 
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   HiOutlineChevronDown,
   HiOutlineChevronUp,
   HiOutlineSelector,
 } from "react-icons/hi";
-
+ 
 interface ColumnConfig {
   label: React.ReactNode;
   width: any;
@@ -15,12 +15,12 @@ interface ColumnConfig {
   sortable?: boolean;
   formatter?: (value: any, row: any) => React.ReactNode;
 }
-
+ 
 interface SortConfig {
   key: string;
   direction: "ascending" | "descending";
 }
-
+ 
 interface DynamicTableProps {
   columns: ColumnConfig[];
   data: any[];
@@ -41,32 +41,26 @@ interface DynamicTableProps {
   tableMinWidth?: string;
   tableMaxWidth?: string;
 }
-
-export default function DynamicTable({
+ 
+export default function DynamicTableTwo({
   columns,
   data,
-  currentPage = 0,
+  currentPage,
   itemsPerPage,
-  onPageChange = () => { },
+  onPageChange,
   onView,
   onDelete,
   noDataMessage = "No data found.",
   sortConfig,
   onSort,
-  header,
-  tableMinWidth = "1000px",
-  tableMaxWidth = '300px'
+  header
 }: DynamicTableProps) {
-  const totalPages = itemsPerPage ? Math.ceil(data.length / itemsPerPage) : 0;
-  const paginatedData = itemsPerPage ? data.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  ) : data;
-
-  useEffect(()=>{
-    console.log("Paginated shift data : ",paginatedData)
-  },[paginatedData])
-
+  // const totalPages = Math.ceil(data.length / itemsPerPage);
+  // const data = data.slice(
+  //   (currentPage - 1) * itemsPerPage,
+  //   currentPage * itemsPerPage
+  // );
+ 
   const renderSortIcon = (columnKey: string) => {
     if (!sortConfig || sortConfig.key !== columnKey) {
       return <HiOutlineSelector className="w-5 h-5 text-headerColor" />;
@@ -76,24 +70,20 @@ export default function DynamicTable({
     }
     return <HiOutlineChevronDown className="w-4 h-4" />;
   };
-
+ 
   return (
-    <div className="h-full">
+    <div>
       {/* Table Wrapper with Border & Radius */}
-      <div className="overflow-hidden rounded-t-md h-full">
-        <div className="overflow-x-auto h-full w-full max-w-['calc(100vw - 408px)']"
-          style={{
-            maxWidth: 'calc(100vw - var(--sidebar-width))'
-          }}
-        >
-          <table className="w-full text-left">
-            <thead className="">
+      <div className="overflow-hidden h-full">
+        <div className="overflow-x-auto" style={{maxWidth: 'calc(100vw - 240px)',height: 'calc(100vh - 120px)'}}>
+          <table className="min-w-[1000px] w-full text-left">
+            <thead className="sticky top-0 bg-gray-200">
               <tr style={{borderRadius: '100%'}}>
                 {columns.map((col, index) => (
                   <th
                     key={index}
                     style={{ width: col.width || "auto" }}
-                    className="text-[#687588]  py-3 whitespace-nowrap text-base font-medium capitalize  text-descriptionColor border-b border-[#EDEDED]"
+                    className="text-[#687588] px-3 py-2 whitespace-nowrap text-sm font-normal capitalize  text-descriptionColor border-b border-[#EDEDED]"
                   // onClick={() =>
                   //   col.sortable && onSort && onSort(col.accessor)
                   // }
@@ -116,14 +106,14 @@ export default function DynamicTable({
               </tr>
             </thead>
             <tbody>
-              {paginatedData?.length > 0 ? (
-                paginatedData.map((row, i) => (
-                  <tr key={i} className="border-b border-[#EDEDED]">
+              {data.length > 0 ? (
+                data.map((row, i) => (
+                  <tr key={i} className="border-b border-border">
                     {columns.map((col, idx) => (
                       <td
                         key={idx}
-                        style={{ minWidth: col.width || "auto" }}
-                        className=" text-[#4a4c56]"
+                        style={{ width: col.width || "auto" }}
+                        className="text-[#4a4c56]"
                       >
                         {col.formatter
                           ? col.formatter(row[col.accessor], row)
@@ -168,29 +158,6 @@ export default function DynamicTable({
           </table>
         </div>
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-between items-center mt-6">
-          <button
-            onClick={() => onPageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-4 py-2 text-sm cursor-pointer rounded-sm text-gray-700 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
-          >
-            Previous
-          </button>
-          <span className="text-sm text-gray-500">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => onPageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 text-sm cursor-pointer rounded-sm text-gray-700 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
-          >
-            Next
-          </button>
-        </div>
-      )}
     </div>
   );
 }

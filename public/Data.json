@@ -1,42 +1,42 @@
 [
   {
     "id": "JOB_001",
-    "title": "Software Engineer"
+    "name": "Software Engineer"
   },
   {
     "id": "JOB_002", 
-    "title": "Product Manager"
+    "name": "Product Manager"
   },
   {
     "id": "JOB_003",
-    "title": "Data Analyst"
+    "name": "Data Analyst"
   },
   {
     "id": "JOB_004",
-    "title": "UX Designer"
+    "name": "UX Designer"
   },
   {
     "id": "JOB_005",
-    "title": "DevOps Engineer"
+    "name": "DevOps Engineer"
   },
   {
     "id": "JOB_006",
-    "title": "Marketing Specialist"
+    "name": "Marketing Specialist"
   },
   {
     "id": "JOB_007",
-    "title": "Sales Representative"
+    "name": "Sales Representative"
   },
   {
     "id": "JOB_008",
-    "title": "HR Manager"
+    "name": "HR Manager"
   },
   {
     "id": "JOB_009",
-    "title": "Financial Analyst"
+    "name": "Financial Analyst"
   },
   {
     "id": "JOB_010",
-    "title": "Customer Support Specialist"
+    "name": "Customer Support Specialist"
   }
 ]

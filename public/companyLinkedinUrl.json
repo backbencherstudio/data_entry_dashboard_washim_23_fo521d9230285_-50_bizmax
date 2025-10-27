@@ -1,0 +1,42 @@
+[
+  {
+    "id": "COMP_001",
+    "name": "https://linkedin.com/company/google"
+  },
+  {
+    "id": "COMP_002",
+    "name": "https://linkedin.com/company/microsoft"
+  },
+  {
+    "id": "COMP_003",
+    "name": "https://linkedin.com/company/apple"
+  },
+  {
+    "id": "COMP_004",
+    "name": "https://linkedin.com/company/amazon"
+  },
+  {
+    "id": "COMP_005",
+    "name": "https://linkedin.com/company/meta"
+  },
+  {
+    "id": "COMP_006",
+    "name": "https://linkedin.com/company/netflix"
+  },
+  {
+    "id": "COMP_007",
+    "name": "https://linkedin.com/company/tesla-motors"
+  },
+  {
+    "id": "COMP_008",
+    "name": "https://linkedin.com/company/uber-com"
+  },
+  {
+    "id": "COMP_009",
+    "name": "https://linkedin.com/company/airbnb"
+  },
+  {
+    "id": "COMP_010",
+    "name": "https://linkedin.com/company/spotify"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "CTRY_001",
+    "name": "United States"
+  },
+  {
+    "id": "CTRY_002",
+    "name": "Canada"
+  },
+  {
+    "id": "CTRY_003",
+    "name": "United Kingdom"
+  },
+  {
+    "id": "CTRY_004",
+    "name": "Germany"
+  },
+  {
+    "id": "CTRY_005",
+    "name": "France"
+  },
+  {
+    "id": "CTRY_006",
+    "name": "Japan"
+  },
+  {
+    "id": "CTRY_007",
+    "name": "Australia"
+  },
+  {
+    "id": "CTRY_008",
+    "name": "Brazil"
+  },
+  {
+    "id": "CTRY_009",
+    "name": "India"
+  },
+  {
+    "id": "CTRY_010",
+    "name": "Singapore"
+  }
+]

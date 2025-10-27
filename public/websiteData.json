@@ -1,0 +1,42 @@
+[
+  {
+    "id": "SITE_001",
+    "name": "https://www.wikipedia.org"
+  },
+  {
+    "id": "SITE_002",
+    "name": "https://www.youtube.com"
+  },
+  {
+    "id": "SITE_003",
+    "name": "https://www.airbnb.com"
+  },
+  {
+    "id": "SITE_004",
+    "name": "https://www.spotify.com"
+  },
+  {
+    "id": "SITE_005",
+    "name": "https://www.dropbox.com"
+  },
+  {
+    "id": "SITE_006",
+    "name": "https://www.slack.com"
+  },
+  {
+    "id": "SITE_007",
+    "name": "https://www.figma.com"
+  },
+  {
+    "id": "SITE_008",
+    "name": "https://www.notion.so"
+  },
+  {
+    "id": "SITE_009",
+    "name": "https://www.zoom.us"
+  },
+  {
+    "id": "SITE_010",
+    "name": "https://www.stripe.com"
+  }
+]

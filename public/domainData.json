@@ -1,0 +1,42 @@
+[
+  {
+    "id": "DOM_001",
+    "name": "google.com"
+  },
+  {
+    "id": "DOM_002",
+    "name": "github.com"
+  },
+  {
+    "id": "DOM_003",
+    "name": "stackoverflow.com"
+  },
+  {
+    "id": "DOM_004",
+    "name": "amazon.com"
+  },
+  {
+    "id": "DOM_005",
+    "name": "twitter.com"
+  },
+  {
+    "id": "DOM_006",
+    "name": "linkedin.com"
+  },
+  {
+    "id": "DOM_007",
+    "name": "instagram.com"
+  },
+  {
+    "id": "DOM_008",
+    "name": "reddit.com"
+  },
+  {
+    "id": "DOM_009",
+    "name": "medium.com"
+  },
+  {
+    "id": "DOM_010",
+    "name": "netflix.com"
+  }
+]

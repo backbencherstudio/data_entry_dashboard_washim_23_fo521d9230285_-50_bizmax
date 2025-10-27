@@ -44,6 +44,7 @@
 }
 
 :root {
+  --sidebar-width:'260px';
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -118,5 +119,18 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.loginbtn:hover .animateArrow {
+  animation: animateArrow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes animateArrow {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(5px);
   }
 }

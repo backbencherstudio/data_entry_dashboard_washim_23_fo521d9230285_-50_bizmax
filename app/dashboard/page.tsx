@@ -1,7 +1,9 @@
+import DataTable from "../_components/DataTable"
+
 export default function page(){
     return(
-        <div className="p-4 bg-gray-200" style={{height: 'calc(100vh - 55px)'}}>
-            Data table
+        <div className="w-full bg-gray-100 overflow-hidden" style={{height: 'calc(100vh - 56px)'}}>
+            <DataTable />
         </div>
     )
 }
