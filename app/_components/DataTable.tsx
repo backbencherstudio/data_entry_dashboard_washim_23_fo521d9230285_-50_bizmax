@@ -886,9 +886,9 @@ export default function DataTable() {
             <div className="flex-1">
                 <DynamicTable data={tableData} columns={columns} />
             </div>
-            {isLogin && <div className="w-full">
-                <PaginationPage totalItems={1000} itemsPerPage={20} onPageChange={(page) => { console.log("Page changed : ", page) }} />
-            </div>}
+            <div className="w-full">
+                <PaginationPage totalItems={isLogin?1000:20} itemsPerPage={20} onPageChange={(page) => { console.log("Page changed : ", page) }} isLogin={isLogin}/>
+            </div>
         </div>
     )
 }

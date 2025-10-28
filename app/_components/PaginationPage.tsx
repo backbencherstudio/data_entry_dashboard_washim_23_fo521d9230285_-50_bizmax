@@ -15,12 +15,14 @@ interface PaginationPageProps {
   totalItems: number;
   itemsPerPage: number;
   onPageChange?: (page: number) => void;
+  isLogin: boolean;
 }
 
 export function PaginationPage({
   totalItems,
   itemsPerPage,
   onPageChange,
+  isLogin
 }: PaginationPageProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -111,6 +113,7 @@ export function PaginationPage({
           <PaginationItem>
             <PaginationNext
               href="#"
+              
               onClick={(e) => {
                 e.preventDefault();
                 handlePageChange(currentPage + 1);
