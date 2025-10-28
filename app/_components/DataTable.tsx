@@ -8,9 +8,10 @@ import { useEffect, useState } from "react"
 
 export default function DataTable() {
     const [loading, setLoading] = useState(true);
-    useEffect(()=>{
+    const isLogin = localStorage?.getItem('islogin') === 'true';
+    useEffect(() => {
         setLoading(false);
-    },[])
+    }, [])
     const columns = [
         {
             label: "First Name",
@@ -66,9 +67,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                        :
+                        <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -90,9 +93,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -102,9 +107,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                        :
+                        <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -114,9 +121,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -126,9 +135,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -138,9 +149,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -150,9 +163,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {accessor?.split('T')?.[0]}
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -162,9 +177,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -189,9 +206,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -201,9 +220,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -213,9 +234,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -225,9 +248,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -249,9 +274,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -261,9 +288,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -273,9 +302,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -285,9 +316,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {accessor?.split('T')?.[0]}
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -297,9 +330,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -375,9 +410,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -447,9 +484,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -459,9 +498,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -471,9 +512,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -483,9 +526,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -495,9 +540,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -522,9 +569,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -534,9 +583,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -546,9 +597,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -558,9 +611,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -570,9 +625,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {accessor?.split('T')?.[0]}
+                   {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -582,9 +639,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -594,9 +653,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -606,9 +667,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -618,9 +681,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -630,9 +695,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -642,9 +709,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -654,9 +723,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -666,9 +737,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -678,9 +751,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -690,9 +765,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -702,9 +779,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -714,9 +793,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -726,9 +807,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -738,9 +821,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -750,9 +835,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -762,9 +849,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -774,9 +863,11 @@ export default function DataTable() {
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
                         {accessor}
                     </span>
+                    :
+                    <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
                 </div>
             )
         },
@@ -795,9 +886,9 @@ export default function DataTable() {
             <div className="flex-1">
                 <DynamicTable data={tableData} columns={columns} />
             </div>
-            <div className="w-full">
+            {isLogin && <div className="w-full">
                 <PaginationPage totalItems={1000} itemsPerPage={20} onPageChange={(page) => { console.log("Page changed : ", page) }} />
-            </div>
+            </div>}
         </div>
     )
 }

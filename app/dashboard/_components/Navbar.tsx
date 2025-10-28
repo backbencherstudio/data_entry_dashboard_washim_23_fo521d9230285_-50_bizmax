@@ -89,7 +89,7 @@ export default function Navbar() {
                     </button>
                 </div>
                 :
-                <Link href="/login" onClick={() => setIsExportPopupOpen(true)} className="px-4 flex loginbtn items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
+                <Link href="/login" className="px-4 flex loginbtn items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
                     <span>Login</span>
                     <AiOutlineDoubleRight className="animateArrow" />
                 </Link>}
@@ -106,8 +106,8 @@ export default function Navbar() {
                     setExportStatus('idle');
                 }}
                 onExport={handleExport}
-                maxRecords={10000}
-                availableRecords={5000}
+                maxRecords={100000}
+                availableRecords={50000}
                 exportType="csv"
             />
         </div>

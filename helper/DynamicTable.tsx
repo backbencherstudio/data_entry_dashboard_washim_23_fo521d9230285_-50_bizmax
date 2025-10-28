@@ -77,7 +77,7 @@ export default function DynamicTableTwo({
       <div className="overflow-hidden h-full">
         <div className="overflow-x-auto" style={{maxWidth: 'calc(100vw - 240px)',height: 'calc(100vh - 120px)'}}>
           <table className="min-w-[1000px] w-full text-left">
-            <thead className="sticky top-0 bg-gray-200">
+            <thead className="sticky top-0 z-99 bg-gray-200">
               <tr style={{borderRadius: '100%'}}>
                 {columns.map((col, index) => (
                   <th
