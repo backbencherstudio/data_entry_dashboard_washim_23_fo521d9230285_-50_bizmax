@@ -16,7 +16,7 @@ export default function LogoutConfirmationPopup({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#00000027] backdrop-blur-xs flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-[#00000027] backdrop-blur-xs flex items-center justify-center p-4 z-999">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-sm">
         {/* Header */}
         <div className="flex items-center justify-center gap-3 py-4">

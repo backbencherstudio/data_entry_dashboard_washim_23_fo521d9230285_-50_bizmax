@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa6";
 import { AiOutlineDoubleRight } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 
 import { IoSearch } from "react-icons/io5";
 import { AlertCircle, CheckCircle2, Download } from "lucide-react";
@@ -15,6 +16,7 @@ import LogoutConfirmationPopup from "@/app/_components/LogoutConfirmationPopup";
 export default function Navbar() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
+    const pathname = usePathname();
     const handleFileUpload = (file: File) => {
         console.log('File uploaded:', file);
         // Handle the file upload logic here
@@ -29,6 +31,7 @@ export default function Navbar() {
         };
         reader.readAsText(file);
     };
+    const [currentPage, setCurrentPage] = useState<string>('');
     const [isExportPopupOpen, setIsExportPopupOpen] = useState(false);
     const [exportStatus, setExportStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
@@ -45,7 +48,6 @@ export default function Navbar() {
             // - Calling an API endpoint
             // - Downloading data from your backend
 
-            console.log(`Successfully exported ${exportSize} records`);
             setExportStatus('success');
 
             // Close popup after success
@@ -65,8 +67,14 @@ export default function Navbar() {
         setIsLogin(login === "true");
     }, [])
 
+    useEffect(() => {
+        const segments = pathname?.split('?')?.[0]?.split('/').filter(Boolean);
+        setCurrentPage(segments?.[segments?.length - 1] || '');
+        console.log("Path : ",segments)
+    }, [pathname]);
+
     return (
-        <div className="border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <div className="border-b border-gray-200 px-4 flex items-center justify-between">
             <div className="flex items-center gap-2 border border-gray-300 w-fit px-2 py-1 text-sm rounded-md">
                 <button type="button" className="cursor-pointer">
                     <IoSearch className="text-gray-500" />
@@ -76,6 +84,11 @@ export default function Navbar() {
                     className="outline-none"
                     placeholder="Search people"
                 />
+            </div>
+            <div className="flex items-center text-gray-800 font-medium">
+                <Link href="/dashboard" className={`flex justify-center py-3 ${currentPage.includes("dashboard") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Apollo</Link>
+                <Link href="/dashboard/zoominfo" className={`flex justify-center py-3 ${currentPage.includes("zoominfo") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Zoominfo</Link>
+                <Link href="/dashboard/sells" className={`flex justify-center py-3 ${currentPage.includes("sells") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Sells</Link>
             </div>
             {isLogin ?
                 <div className="flex gap-4">
