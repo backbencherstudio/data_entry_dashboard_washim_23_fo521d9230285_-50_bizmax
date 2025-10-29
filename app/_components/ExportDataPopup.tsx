@@ -75,7 +75,7 @@ export default function ExportDataPopup({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-[#00000027] backdrop-blur-xs bg-opacity-50 flex items-center justify-center p-4 z-50" onClick={handleClose}>
+        <div className="fixed inset-0 bg-[#00000027] backdrop-blur-xs bg-opacity-50 flex items-center justify-center p-4 z-999" onClick={handleClose}>
             <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b">
