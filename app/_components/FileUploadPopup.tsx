@@ -1,6 +1,6 @@
 import { useState, useRef, ChangeEvent, DragEvent } from 'react';
 import { X, Upload, FileText, AlertCircle, CheckCircle2 } from 'lucide-react';
-import toast,{Toaster} from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 import {
@@ -28,7 +28,7 @@ export default function FileUploadPopup({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [dataType,setDataType] = useState<string>('');
+  const [dataType, setDataType] = useState<string>('');
 
   const handleFileSelect = (file: File) => {
     setError('');
@@ -76,7 +76,7 @@ export default function FileUploadPopup({
   };
 
   const handleUpload = () => {
-    if(!dataType){
+    if (!dataType) {
       toast.error("Please select a data type.")
       return;
     }
@@ -103,7 +103,7 @@ export default function FileUploadPopup({
 
   return (
     <div className="fixed inset-0 bg-[#00000027] backdrop-blur-xs bg-opacity-50 flex items-center justify-center p-4 z-999" onClick={() => handleClose()}>
-      <Toaster position='top-right'/>
+      <Toaster position='top-right' />
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
@@ -120,7 +120,10 @@ export default function FileUploadPopup({
         <div className="p-6 space-y-6">
           {/* Upload Area */}
           <div>
-            <Select>
+            <Select
+              value={dataType}
+              onValueChange={(value: string) => setDataType(value)}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Select a data type" />
               </SelectTrigger>
@@ -133,10 +136,10 @@ export default function FileUploadPopup({
           </div>
           <div
             className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${isDragging
-                ? 'border-blue-500 bg-blue-50'
-                : selectedFile
-                  ? 'border-green-500 bg-green-50'
-                  : 'border-gray-300 hover:border-gray-400'
+              ? 'border-blue-500 bg-blue-50'
+              : selectedFile
+                ? 'border-green-500 bg-green-50'
+                : 'border-gray-300 hover:border-gray-400'
               }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
