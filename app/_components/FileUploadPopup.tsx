@@ -1,5 +1,15 @@
 import { useState, useRef, ChangeEvent, DragEvent } from 'react';
 import { X, Upload, FileText, AlertCircle, CheckCircle2 } from 'lucide-react';
+import toast,{Toaster} from 'react-hot-toast';
+
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface FileUploadPopupProps {
   isOpen: boolean;
@@ -18,10 +28,11 @@ export default function FileUploadPopup({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dataType,setDataType] = useState<string>('');
 
   const handleFileSelect = (file: File) => {
     setError('');
-    
+
     // Check file type
     if (!file.name.toLowerCase().endsWith('.csv')) {
       setError('Please select a CSV file');
@@ -57,7 +68,7 @@ export default function FileUploadPopup({
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const file = e.dataTransfer.files[0];
     if (file) {
       handleFileSelect(file);
@@ -65,6 +76,10 @@ export default function FileUploadPopup({
   };
 
   const handleUpload = () => {
+    if(!dataType){
+      toast.error("Please select a data type.")
+      return;
+    }
     if (selectedFile) {
       onFileUpload(selectedFile);
       resetForm();
@@ -87,8 +102,9 @@ export default function FileUploadPopup({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#00000027] backdrop-blur-xs bg-opacity-50 flex items-center justify-center p-4 z-999" onClick={()=>handleClose()}>
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md" onClick={(e)=>e.stopPropagation()}>
+    <div className="fixed inset-0 bg-[#00000027] backdrop-blur-xs bg-opacity-50 flex items-center justify-center p-4 z-999" onClick={() => handleClose()}>
+      <Toaster position='top-right'/>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-xl font-semibold text-gray-900">Upload CSV File</h2>
@@ -101,16 +117,27 @@ export default function FileUploadPopup({
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 space-y-6">
           {/* Upload Area */}
+          <div>
+            <Select>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a data type" />
+              </SelectTrigger>
+              <SelectContent className='z-999'>
+                <SelectItem value="apollo">Apollo</SelectItem>
+                <SelectItem value="zoominfo">Zoominfo</SelectItem>
+                <SelectItem value="sells">Sells</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div
-            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${
-              isDragging
+            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${isDragging
                 ? 'border-blue-500 bg-blue-50'
                 : selectedFile
-                ? 'border-green-500 bg-green-50'
-                : 'border-gray-300 hover:border-gray-400'
-            }`}
+                  ? 'border-green-500 bg-green-50'
+                  : 'border-gray-300 hover:border-gray-400'
+              }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -123,7 +150,7 @@ export default function FileUploadPopup({
               accept=".csv"
               className="hidden"
             />
-            
+
             {selectedFile ? (
               <div className="flex flex-col items-center">
                 <CheckCircle2 className="w-12 h-12 text-green-500 mb-3" />

@@ -1,5 +1,12 @@
 import { useState } from 'react';
 import { X, Download, Database, AlertCircle, CheckCircle2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface ExportDataPopupProps {
     isOpen: boolean;
