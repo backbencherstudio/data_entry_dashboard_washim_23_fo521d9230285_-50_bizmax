@@ -1,0 +1,42 @@
+[
+  {
+    "id": "loc_001",
+    "name": "California, San Francisco, USA"
+  },
+  {
+    "id": "loc_002", 
+    "name": "New York, New York City, USA"
+  },
+  {
+    "id": "loc_003",
+    "name": "Texas, Austin, USA"
+  },
+  {
+    "id": "loc_004",
+    "name": "Illinois, Chicago, USA"
+  },
+  {
+    "id": "loc_005",
+    "name": "Washington, Seattle, USA"
+  },
+  {
+    "id": "loc_006",
+    "name": "Massachusetts, Boston, USA"
+  },
+  {
+    "id": "loc_007",
+    "name": "Colorado, Denver, USA"
+  },
+  {
+    "id": "loc_008",
+    "name": "Georgia, Atlanta, USA"
+  },
+  {
+    "id": "loc_009",
+    "name": "Ontario, Toronto, Canada"
+  },
+  {
+    "id": "loc_010",
+    "name": "England, London, UK"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "email_001",
+    "name": "john.doe@gmail.com"
+  },
+  {
+    "id": "email_002", 
+    "name": "sarah.wilson@yahoo.com"
+  },
+  {
+    "id": "email_003",
+    "name": "mike.chen@outlook.com"
+  },
+  {
+    "id": "email_004",
+    "name": "emily.rodriguez@hotmail.com"
+  },
+  {
+    "id": "email_005",
+    "name": "david.kim@aol.com"
+  },
+  {
+    "id": "email_006",
+    "name": "jennifer.wang@icloud.com"
+  },
+  {
+    "id": "email_007",
+    "name": "robert.smith@protonmail.com"
+  },
+  {
+    "id": "email_008",
+    "name": "amanda.brown@company.com"
+  },
+  {
+    "id": "email_009",
+    "name": "kevin.nguyen@corporate.com"
+  },
+  {
+    "id": "email_010",
+    "name": "lisa.garcia@enterprise.com"
+  }
+]
