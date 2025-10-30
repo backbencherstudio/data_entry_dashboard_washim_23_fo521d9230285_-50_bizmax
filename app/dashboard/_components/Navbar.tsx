@@ -86,9 +86,9 @@ export default function Navbar() {
                 />
             </div>
             <div className="flex items-center text-gray-800 font-medium">
-                <Link href="/dashboard" className={`flex justify-center py-3 ${currentPage.includes("dashboard") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Apollo</Link>
-                <Link href="/dashboard/zoominfo" className={`flex justify-center py-3 ${currentPage.includes("zoominfo") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Zoominfo</Link>
-                <Link href="/dashboard/sells" className={`flex justify-center py-3 ${currentPage.includes("sells") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Sells</Link>
+                <Link href="/dashboard" className={`flex justify-center rounded-t-lg py-3 ${currentPage.includes("dashboard") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Apollo</Link>
+                <Link href="/dashboard/zoominfo" className={`flex justify-center rounded-t-lg py-3 ${currentPage.includes("zoominfo") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Zoominfo</Link>
+                <Link href="/dashboard/sells" className={`flex justify-center rounded-t-lg py-3 ${currentPage.includes("sells") ? "bg-gray-200" : "hover:bg-gray-100"} w-[110px] duration-300`}>Sells</Link>
             </div>
             {isLogin ?
                 <div className="flex gap-4">

@@ -6,7 +6,7 @@ import { PaginationPage } from "./PaginationPage"
 import Loader from "./Loader"
 import { useEffect, useState } from "react"
 
-export default function DataTable() {
+export default function ApolloDataTable() {
     const [loading, setLoading] = useState(true);
     const isLogin = localStorage?.getItem('islogin') === 'true';
     useEffect(() => {
