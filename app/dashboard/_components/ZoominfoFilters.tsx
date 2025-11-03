@@ -24,6 +24,7 @@ import revenue from '@/public/demoRevenue.json'
 import employeeSize from '@/public/employeeSize.json'
 import locationData from '@/public/demoLocationdata.json'
 import emailData from '@/public/demoEmailData.json'
+import keywordData from "@/public/KeywordData.json";
 
 // Types for better type safety
 type FilterState = {
@@ -34,6 +35,7 @@ type FilterState = {
   employeeSize: string[];
   companyRevenue: string[];
   location: string[];
+  keywords: string[];
 };
 
 const INITIAL_FILTER_STATE: FilterState = {
@@ -43,7 +45,8 @@ const INITIAL_FILTER_STATE: FilterState = {
   industry: [],
   employeeSize: [],
   companyRevenue: [],
-  location: []
+  location: [],
+  keywords: []
 };
 
 // Define proper types for filter configurations
@@ -91,6 +94,7 @@ export default function ZoominfoFilters() {
     initialFilters.leadTitle = parseParam(searchParams.get('lead_title'));
     initialFilters.companyWebsite = parseParam(searchParams.get('company_website'));
     initialFilters.industry = parseParam(searchParams.get('industry'));
+    initialFilters.keywords = parseParam(searchParams.get('keywords'));
     initialFilters.employeeSize = parseParam(searchParams.get('employee_size'));
     initialFilters.companyRevenue = parseParam(searchParams.get('company_revenue'));
     initialFilters.location = parseParam(searchParams.get('location'));
@@ -107,6 +111,7 @@ export default function ZoominfoFilters() {
     if (filters.companyWebsite.length > 0) params.set('company_website', filters.companyWebsite.join(','));
     if (filters.companyRevenue.length > 0) params.set('company_revenue', filters.companyRevenue.join(','));
     if (filters.industry.length > 0) params.set('industry', filters.industry.join(','));
+    if (filters.keywords.length > 0) params.set('keywords', filters.keywords.join(','));
     if (filters.employeeSize.length > 0) params.set('employee_size', filters.employeeSize.join(','));
     if (filters.location.length > 0) params.set('location', filters.location.join(','));
 
@@ -161,6 +166,18 @@ export default function ZoominfoFilters() {
         Icon: <LiaIndustrySolid />,
         selectedData: filters.industry,
         onUpDate: (data: string[]) => updateFilter('industry', data)
+      }
+    },
+    {
+      type: 'regular',
+      key: 'keywords',
+      props: {
+        data: keywordData,
+        title: "Keyword",
+        subTitle: "Keywords",
+        Icon: <VscSymbolKeyword />,
+        selectedData: filters.keywords,
+        onUpDate: (data: string[]) => updateFilter('keywords', data)
       }
     },
     {
