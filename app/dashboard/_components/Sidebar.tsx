@@ -13,7 +13,7 @@ export default function Sidebar() {
     const path = usePathname();
     const [isLogoutModalOpen,setIsLogoutModalOpen] = useState(false);
     const [pathName,setPathName] = useState<string>('');
-
+const [isLogin, setIsLogin] = useState(false);
     const handleLogoutModal=()=>{
         setIsLogoutModalOpen(true);
     }
@@ -29,6 +29,10 @@ export default function Sidebar() {
         setPathName(pathnames?.[pathnames?.length - 1])
         console.log("Path name : ",path);
     },[path])
+    useEffect(() => {
+        const login = localStorage.getItem('islogin');
+        setIsLogin(login === "true");
+    }, [])
 
     return (
         <div className="w-[240px] h-screen overflow-hidden">
@@ -38,12 +42,12 @@ export default function Sidebar() {
             {pathName === "dashboard"&&<ApolloFilters />}
             {pathName === "zoominfo"&&<ZoominfoFilters />}
             {pathName === "sells"&&<SellsFilters />}
-            <div className="px-4 mt-4">
+            {isLogin && <div className="px-4 mt-4">
                 <button type="button" onClick={handleLogoutModal} className="cursor-pointer flex items-center gap-4 px-4 py-2 border w-full border-gray-300 rounded-lg justify-center">
                     <MdOutlineLogout />
                     <span>Logout</span>
                 </button>
-            </div>
+            </div>}
             <LogoutConfirmationPopup isOpen={isLogoutModalOpen}
                 onClose={()=>setIsLogoutModalOpen(false)}
                 onConfirm={handleLogout}

@@ -11,7 +11,9 @@ import { usePathname } from "next/navigation";
 import { IoSearch } from "react-icons/io5";
 import { AlertCircle, CheckCircle2, Download } from "lucide-react";
 import Link from "next/link";
+import { IoCopyOutline } from "react-icons/io5";
 import LogoutConfirmationPopup from "@/app/_components/LogoutConfirmationPopup";
+import toast,{Toaster} from "react-hot-toast";
 
 export default function Navbar() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -70,11 +72,34 @@ export default function Navbar() {
     useEffect(() => {
         const segments = pathname?.split('?')?.[0]?.split('/').filter(Boolean);
         setCurrentPage(segments?.[segments?.length - 1] || '');
-        console.log("Path : ",segments)
+        console.log("Path : ", segments)
     }, [pathname]);
+
+    const handleCopyUrlClick = () => {
+        const currentUrl = window.location.href;
+        navigator.clipboard.writeText(currentUrl)
+            .then(() => {
+                toast?.success('URL copied to clipboard');
+            })
+            .catch(err => {
+                console.error('Failed to copy URL: ', err);
+                const textArea = document.createElement('textarea');
+                textArea.value = currentUrl;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    console.log('URL copied to clipboard using fallback');
+                } catch (fallbackErr) {
+                    console.error('Fallback copy failed: ', fallbackErr);
+                }
+                document.body.removeChild(textArea);
+            });
+    };
 
     return (
         <div className="border-b border-gray-200 px-4 flex items-center justify-between">
+            <Toaster position="top-right"/>
             <div className="flex items-center gap-2 border border-gray-300 w-fit px-2 py-1 text-sm rounded-md">
                 <button type="button" className="cursor-pointer">
                     <IoSearch className="text-gray-500" />
@@ -102,10 +127,17 @@ export default function Navbar() {
                     </button>
                 </div>
                 :
-                <Link href="/login" className="px-4 flex loginbtn items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
-                    <span>Login</span>
-                    <AiOutlineDoubleRight className="animateArrow" />
-                </Link>}
+                <div className="flex items-center gap-4">
+                    <button type="button" onClick={handleCopyUrlClick} className="px-4 flex loginbtn items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
+                        <IoCopyOutline />
+                        <span>Copy url</span>
+                    </button>
+                    <Link href="/login" className="px-4 flex loginbtn items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
+                        <span>Login</span>
+                        <AiOutlineDoubleRight className="animateArrow" />
+                    </Link>
+                </div>
+            }
             <FileUploadPopup
                 isOpen={isPopupOpen}
                 onClose={() => setIsPopupOpen(false)}
