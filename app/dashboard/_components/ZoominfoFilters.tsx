@@ -85,9 +85,9 @@ export default function ZoominfoFilters() {
   // Initialize filters from URL params
   useEffect(() => {
     const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
-    
+
     // Helper function to parse comma-separated params
-    const parseParam = (param: string | null): string[] => 
+    const parseParam = (param: string | null): string[] =>
       param ? param.split(',').filter(Boolean) : [];
 
     initialFilters.email = parseParam(searchParams.get('email'));
@@ -133,14 +133,10 @@ export default function ZoominfoFilters() {
   // Memoized filter configurations to prevent unnecessary re-renders
   const filterConfigs = useMemo((): FilterConfig[] => [
     {
-      type: 'regular',
+      type: 'email',
       key: 'email',
       props: {
-        data: emailData,
-        title: "Email",
-        subTitle: "Emails",
-        Icon: <GiArcheryTarget />,
-        selectedData: filters.email,
+        selectedEmail: filters.email,
         onUpDate: (data: string[]) => updateFilter('email', data)
       }
     },
@@ -244,16 +240,16 @@ export default function ZoominfoFilters() {
 
   return (
     <div>
-      <button 
-        type="button" 
-        onClick={resetFilters} 
+      <button
+        type="button"
+        onClick={resetFilters}
         className="w-full border cursor-pointer py-2 text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 transition-colors"
       >
         Reset filters
       </button>
-      
-      <div 
-        className="overflow-y-auto space-y-2 pb-2 text-nowrap" 
+
+      <div
+        className="overflow-y-auto space-y-2 pb-2 text-nowrap"
         style={{ height: 'calc(100vh - 160px)' }}
       >
         {/* Render all filters dynamically */}
