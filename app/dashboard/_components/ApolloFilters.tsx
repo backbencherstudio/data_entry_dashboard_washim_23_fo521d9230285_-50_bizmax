@@ -60,6 +60,11 @@ const INITIAL_FILTER_STATE: FilterState = {
   maxAnnualRevenue: 1000
 };
 
+type filterType = {
+  id: string;
+  name: string;
+}
+
 // Define proper types for filter configurations
 interface BaseFilterConfig {
   key: string;
@@ -92,6 +97,10 @@ export default function ApolloFilters() {
   const router = useRouter();
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
   const [openRevenue, setOpenRevenue] = useState(false);
+  const [searchItem,setSearchItem] = useState<{key:string,value:string}>({
+    key:'',
+    value:''
+  });
 
   // Initialize filters from URL params
   useEffect(() => {
@@ -290,7 +299,7 @@ export default function ApolloFilters() {
       case 'email':
         return <EmailFilter key={config.key} {...config.props} />;
       case 'regular':
-        return <Filters key={config.key} {...config.props} />;
+        return <Filters key={config.key} {...config.props} onSearch={(val) => setSearchItem({ key: config?.key, value: val })}/>;
       default:
         return null;
     }

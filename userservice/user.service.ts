@@ -42,58 +42,72 @@ export const UserService = {
         };
         return await Fetch.post('/logout', { userid: id }, config);
     },
-    getStaffStatus: async () => {
+    getFilters: async ({filter,search}:{filter:string,search?:string}) => {
         const userToken = CookieHelper.get({ key: "token" });
         const config = {
             headers: {
                 "Content-Type": "application/json",
+                // Authorization: userToken,
             },
         };
-        return await Fetch.get('/staffStatus', config);
+        if(filter === 'jobTitles'){
+            return await Fetch.get(`/leads/job_title?search=${search}`, config);
+        }
+        if(filter === 'domains'){
+            return await Fetch.get(`/leads/company_domain?search=${search}`, config);
+        }
+        if(filter === 'personalLinkedin'){
+            return await Fetch.get(`/leads/linkedin_id?search=${search}`, config);
+        }
+        if(filter === 'location'){
+            return await Fetch.get(`/leads/city2?search=${search}`, config);
+        }
+        if(filter === 'emailFirst'){
+            return await Fetch.get(`/leads/email_first?search=${search}`, config);
+        }
+        if(filter === 'emailSecond'){
+            return await Fetch.get(`/leads/email_second?search=${search}`, config);
+        }
+        if(filter === 'lead_titles'){
+            return await Fetch.get(`/leads/lead_titles?search=${search}`, config);
+        }
+        if(filter === 'industry'){
+            return await Fetch.get(`/leads/company_industry?search=${search}`, config);
+        }
+        if(filter === 'keywords'){
+            return await Fetch.get(`/leads/skills?search=${search}`, config);
+        }
+        if(filter === 'company_website'){
+            return await Fetch.get(`/leads/company_website?search=${search}`, config);
+        }
+        if(filter === 'companyRevenue'){
+            return await Fetch.get(`/leads/revenue_range?search=${search}`, config);
+        }
+        if(filter === 'employeeSize'){
+            return await Fetch.get(`/leads/company_size?search=${search}`, config);
+        }
+        if(filter === 'company_location'){
+            return await Fetch.get(`/leads/company_location_text?search=${search}`, config);
+        }
     },
-    getClientStatus: async () => {
+    getFilteredSalesData: async({search,page,limit}:{search?:string,page:number,limit:number})=>{
         const userToken = CookieHelper.get({ key: "token" });
         const config = {
             headers: {
                 "Content-Type": "application/json",
+                // Authorization: userToken,
             },
         };
-        return await Fetch.get('/clientStatus', config);
+        return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&search=${search ||""}`, config);
     },
-    getStaffData: async () => {
+    getFilteredZoominfoData: async({search,page,limit}:{search?:string,page:number,limit:number})=>{
         const userToken = CookieHelper.get({ key: "token" });
         const config = {
             headers: {
                 "Content-Type": "application/json",
+                // Authorization: userToken,
             },
         };
-        return await Fetch.get('/staffData', config);
-    },
-    getSingleStaffData: async ({id}:{id:string}) => {
-        const userToken = CookieHelper.get({ key: "token" });
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        return await Fetch.get(`/staffData/${id}`, config);
-    },
-    getClientData: async () => {
-        const userToken = CookieHelper.get({ key: "token" });
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        return await Fetch.get('/clientData', config);
-    },
-    updateSingleStaffData:async ({id,data}:{id:string,data:any}) => {
-        const userToken = CookieHelper.get({ key: "token" });
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        return await Fetch.patch(`/staffData/${id}`,data, config);
-    },
+        return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&search=${search ||""}`, config);
+    }
 }

@@ -6,7 +6,7 @@ import { PaginationPage } from "./PaginationPage"
 import Loader from "./Loader"
 import { useEffect, useState } from "react"
 
-type DataRow = {
+type dataType = {
     id: string;
     company_id: string;
     name: string;
@@ -15,8 +15,8 @@ type DataRow = {
     phone: string;
     work_phone: string;
     lead_location: string[];
-    lead_division: string;
-    lead_title: string;
+    lead_divison: string;
+    lead_titles: string;
     decision_making_power: string;
     seniority_level: string[];
     linkedin_url: string;
@@ -36,7 +36,21 @@ type DataRow = {
     company_size_key: string;
 };
 
-export default function ZoominfoDataTable() {
+type paginationType={
+    total: number;
+    page: number;
+    pages: number;
+    limit: number;
+}
+
+
+type propType={
+    data: dataType[];
+    pagination: paginationType;
+    onPageChange: (page:number)=> void;
+}
+
+export default function ZoominfoDataTable({data,pagination,onPageChange}:propType) {
     const [loading, setLoading] = useState(true);
     const isLogin = localStorage?.getItem('islogin') === 'true';
     useEffect(() => {
@@ -138,7 +152,7 @@ export default function ZoominfoDataTable() {
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
                     {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {"["+accessor?.join(',')+"]"}
+                        {"["+ accessor+"]"}
                     </span>
                         :
                         <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
@@ -147,7 +161,7 @@ export default function ZoominfoDataTable() {
         },
         {
             label: "Lead Division",
-            accessor: "lead_division",
+            accessor: "lead_divison",
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
@@ -161,7 +175,7 @@ export default function ZoominfoDataTable() {
         },
         {
             label: "Lead Title",
-            accessor: "lead_title",
+            accessor: "lead_titles",
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
@@ -194,7 +208,7 @@ export default function ZoominfoDataTable() {
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
                     {isLogin?<span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {"["+accessor?.join(',')+"]"}
+                        {"["+accessor+"]"}
                     </span>
                     :
                     <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
@@ -423,10 +437,10 @@ export default function ZoominfoDataTable() {
     return (
         <div className="w-full h-full flex flex-col gap-4 pb-8">
             <div className="flex-1">
-                <DynamicTable data={zoominfoData} columns={columns} />
+                <DynamicTable data={data} columns={columns} />
             </div>
             <div className="w-full">
-                <PaginationPage totalItems={isLogin?1000:20} itemsPerPage={20} onPageChange={(page) => { console.log("Page changed : ", page) }} isLogin={isLogin}/>
+                <PaginationPage totalItems={isLogin?pagination?.total:20} itemsPerPage={pagination?.limit} onPageChange={(page) => {onPageChange(page) }} isLogin={isLogin}/>
             </div>
         </div>
     )

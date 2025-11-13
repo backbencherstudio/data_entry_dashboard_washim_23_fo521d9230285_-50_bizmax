@@ -15,7 +15,7 @@ type dataType={
     email_second: string;
     phone: string;
     company_phone: string;
-    url: string;//linkedurl
+    url: string;
     company_name: string;
     company_id: string;
     company_domain: string;
@@ -24,7 +24,20 @@ type dataType={
     created_at: string;
 }
 
-export default function SellsDataTable() {
+type paginationType={
+    total: number;
+    page: number;
+    pages: number;
+    limit: number;
+}
+
+type propType={
+    data: dataType[];
+    pagination: paginationType;
+    onPageChange: (page:number)=> void;
+}
+
+export default function SellsDataTable({data,pagination,onPageChange}:propType) {
     const [loading, setLoading] = useState(true);
     const isLogin = localStorage?.getItem('islogin') === 'true';
     useEffect(() => {
@@ -232,10 +245,10 @@ export default function SellsDataTable() {
     return (
         <div className="w-full h-full flex flex-col gap-4 pb-8">
             <div className="flex-1">
-                <DynamicTable data={tableData} columns={columns} />
+                <DynamicTable data={data} columns={columns} />
             </div>
             <div className="w-full">
-                <PaginationPage totalItems={isLogin ? 1000 : 20} itemsPerPage={20} onPageChange={(page) => { console.log("Page changed : ", page) }} isLogin={isLogin} />
+                <PaginationPage totalItems={isLogin ? pagination?.total  : 20} itemsPerPage={10} onPageChange={(page) => { onPageChange(page) }} isLogin={isLogin} />
             </div>
         </div>
     )

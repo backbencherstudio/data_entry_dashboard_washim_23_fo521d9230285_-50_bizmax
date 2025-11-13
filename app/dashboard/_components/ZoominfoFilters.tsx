@@ -25,6 +25,7 @@ import employeeSize from '@/public/employeeSize.json'
 import locationData from '@/public/demoLocationdata.json'
 import emailData from '@/public/demoEmailData.json'
 import keywordData from "@/public/KeywordData.json";
+import { UserService } from "@/userservice/user.service";
 
 // Types for better type safety
 type FilterState = {
@@ -48,6 +49,12 @@ const INITIAL_FILTER_STATE: FilterState = {
   location: [],
   keywords: []
 };
+
+
+type filterType = {
+  id: string;
+  name: string;
+}
 
 // Define proper types for filter configurations
 interface BaseFilterConfig {
@@ -81,6 +88,71 @@ export default function ZoominfoFilters() {
   const router = useRouter();
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
   const [openRevenue, setOpenRevenue] = useState(false);
+  const [searchItem, setSearchItem] = useState<{ key: string; value: string }>({
+    key: "",
+    value: ""
+  });
+
+
+  //fitler states
+
+  const [jobTitles, setJobTitles] = useState<filterType[]>([]);
+  const [industry, setIndustry] = useState<filterType[]>([]);
+  const [keywords, setKeywords] = useState<filterType[]>([]);
+  const [companyWebsite,setCompanyWebsite] = useState<filterType[]>([])
+  const [companyRevenue,setCompanyRevenue] = useState<filterType[]>([])
+  const [companySize,setCompanySize] = useState<filterType[]>([])
+  const [location,setLocation] = useState<filterType[]>([])
+
+
+  const getFilters = async (search: string) => {
+    try {
+      const res = await UserService?.getFilters({ filter: searchItem?.key || search, search: searchItem?.value });
+      if (res?.data?.success) {
+        if (searchItem?.key === "lead_titles" || search === "lead_titles") {
+          setJobTitles(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.lead_titles })));
+        }
+        if (searchItem?.key === "industry" || search === "industry") {
+          setIndustry(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.company_industry })));
+        }
+        if (searchItem?.key === "keywords" || search === "keywords") {
+          setKeywords(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.skills })));
+        }
+        if (searchItem?.key === "company_website" || search === "company_website") {
+          setCompanyWebsite(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.company_website })));
+        }
+        if (searchItem?.key === "companyRevenue" || search === "companyRevenue") {
+          setCompanyRevenue(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.revenue_range })));
+        }
+        if (searchItem?.key === "employeeSize" || search === "employeeSize") {
+          setCompanySize(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.company_size })));
+        }
+        if (searchItem?.key === "company_location" || search === "company_location") {
+          setLocation(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.company_location_text })));
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  useEffect(() => {
+    getFilters('')
+  }, [searchItem])
+
+
+  useEffect(() => {
+    getFilters('lead_titles');
+    getFilters('industry');
+    getFilters('keywords');
+    getFilters('company_website');
+    getFilters('companyRevenue');
+    getFilters('companySize');
+    getFilters('employeeSize');
+    getFilters('company_location');
+  }, [])
+
 
   // Initialize filters from URL params
   useEffect(() => {
@@ -144,7 +216,7 @@ export default function ZoominfoFilters() {
       type: 'regular',
       key: 'lead_titles',
       props: {
-        data: jobTitleData,
+        data: jobTitles,
         title: "Lead title",
         subTitle: "Lead titles",
         Icon: <GiArcheryTarget />,
@@ -156,7 +228,7 @@ export default function ZoominfoFilters() {
       type: 'regular',
       key: 'industry',
       props: {
-        data: industryData,
+        data: industry,
         title: "Industry",
         subTitle: "Industries",
         Icon: <LiaIndustrySolid />,
@@ -168,7 +240,7 @@ export default function ZoominfoFilters() {
       type: 'regular',
       key: 'keywords',
       props: {
-        data: keywordData,
+        data: keywords,
         title: "Keyword",
         subTitle: "Keywords",
         Icon: <VscSymbolKeyword />,
@@ -180,7 +252,7 @@ export default function ZoominfoFilters() {
       type: 'regular',
       key: 'company_website',
       props: {
-        data: websiteData,
+        data: companyWebsite,
         title: "Company Website",
         subTitle: "Company Websities",
         Icon: <CgWebsite />,
@@ -192,7 +264,7 @@ export default function ZoominfoFilters() {
       type: 'regular',
       key: 'companyRevenue',
       props: {
-        data: revenue,
+        data: companyRevenue,
         title: "Company Revenue",
         subTitle: "Company revenue",
         Icon: <GiProfit />,
@@ -204,7 +276,7 @@ export default function ZoominfoFilters() {
       type: 'regular',
       key: 'employeeSize',
       props: {
-        data: employeeSize,
+        data: companySize,
         title: "Emloyee Size",
         subTitle: "Employee size",
         Icon: <FaUsersRays />,
@@ -214,9 +286,9 @@ export default function ZoominfoFilters() {
     },
     {
       type: 'regular',
-      key: 'location',
+      key: 'company_location',
       props: {
-        data: locationData,
+        data: location,
         title: "Location",
         subTitle: "Locations",
         Icon: <IoLocationOutline />,
@@ -224,7 +296,7 @@ export default function ZoominfoFilters() {
         onUpDate: (data: string[]) => updateFilter('location', data)
       }
     }
-  ], [filters, updateFilter]);
+  ], [filters, updateFilter,jobTitles,industry,keywords,companyWebsite,companyRevenue,companySize,location]);
 
   // Render the appropriate component based on filter type
   const renderFilterComponent = (config: FilterConfig) => {
@@ -232,7 +304,7 @@ export default function ZoominfoFilters() {
       case 'email':
         return <EmailFilter key={config.key} {...config.props} />;
       case 'regular':
-        return <Filters key={config.key} {...config.props} />;
+        return <Filters key={config.key} {...config.props} onSearch={(val) => setSearchItem({ key: config?.key, value: val })} />;
       default:
         return null;
     }

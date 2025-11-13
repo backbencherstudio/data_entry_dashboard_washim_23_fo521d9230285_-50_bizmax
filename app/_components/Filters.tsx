@@ -20,30 +20,33 @@ import {
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import { debounce } from "lodash";
 
-type propType={
-    data:any[];
-    title: string;
-    Icon: ReactNode;
-    subTitle: string;
-    selectedData: string[],
-    onUpDate: (data:string[])=> void;
+type propType = {
+  data: any[];
+  title: string;
+  Icon: ReactNode;
+  subTitle: string;
+  selectedData: string[],
+  onUpDate: (data: string[]) => void;
+  onSearch: (search: string) => void;
 }
 
 export default function Filters({
-    data,
-    title,
-    Icon,
-    subTitle,
-    selectedData,
-    onUpDate
-}:propType) {
+  data,
+  title,
+  Icon,
+  subTitle,
+  selectedData,
+  onUpDate,
+  onSearch
+}: propType) {
   const [open, setOpen] = useState(false);
   // const [selectedData, onUpDate] = useState<string[]>([]);
 
   const handleSelect = (jobId: string) => {
     onUpDate(
-      selectedData.includes(jobId) 
+      selectedData.includes(jobId)
         ? selectedData.filter(id => id !== jobId)
         : [...selectedData, jobId]
     );
@@ -59,8 +62,12 @@ export default function Filters({
     onUpDate([]);
   };
 
+  const hanldeSearch = debounce((value: string) => {
+    onSearch(value);
+  }, 500)
+
   const getSelectedJobTitles = () => {
-    return selectedData.map(jobId => 
+    return selectedData.map(jobId =>
       data.find(item => item.id === jobId)?.name
     ).filter(Boolean) as string[];
   };
@@ -69,28 +76,14 @@ export default function Filters({
 
   return (
     <div className={`${open ? "border border-gray-300" : "border-b border-gray-300"} w-full duration-200`}>
-      <button 
-        type="button" 
-        className={`flex cursor-pointer px-4 pt-4 justify-between items-center w-full outline-none ${open ? "text-blue-300" : "text-gray-500"}`} 
+      <button
+        type="button"
+        className={`flex cursor-pointer px-4 pt-4 justify-between items-center w-full outline-none ${open ? "text-blue-300" : "text-gray-500"}`}
         onClick={() => setOpen(prev => !prev)}
       >
         <div className="flex items-center gap-2 flex-1 min-w-0">
           {Icon}
           <span>{title}</span>
-          {/* {selectedData.length > 0 && (
-            <div className="flex items-center gap-1 flex-1 min-w-0">
-              <span className="text-xs text-gray-500 truncate">
-                ({selectedData.length} selected)
-              </span>
-              <Badge 
-                variant="secondary" 
-                className="h-5 px-1 hover:bg-transparent"
-                onClick={clearAll}
-              >
-                <X className="h-3 w-3" />
-              </Badge>
-            </div>
-          )} */}
         </div>
         {open ? <FaCaretUp /> : <FaCaretDown />}
       </button>
@@ -100,7 +93,7 @@ export default function Filters({
           <div className="flex flex-wrap gap-2 mb-3">
             {selectedTitles.map((title, index) => (
               <Badge key={selectedData[index]} variant="secondary" className="pl-2 pr-1 py-1" title={title}>
-                {title?.slice(0,25)}{title?.length > 25?"...":""}
+                {title?.slice(0, 25)}{title?.length > 25 ? "..." : ""}
                 <button
                   onClick={(e) => removeJob(selectedData[index], e)}
                   className="ml-1 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
@@ -119,14 +112,14 @@ export default function Filters({
               role="combobox"
               className="w-full justify-between"
             >
-              {selectedData.length > 0 
+              {selectedData.length > 0
                 ? `${selectedData.length} ${subTitle} selected`
                 : `Select ${subTitle}...`}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-full p-0">
             <Command>
-              <CommandInput placeholder={`Search ${subTitle}...`} />
+              <CommandInput placeholder={`Search ${subTitle}...`} onValueChange={(value) => hanldeSearch(value)} />
               <CommandList>
                 <CommandEmpty>No {title} found.</CommandEmpty>
                 <CommandGroup>
