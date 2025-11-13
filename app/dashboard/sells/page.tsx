@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 
-type dataType={
+type dataType = {
     id: string;
     first_name: string;
     last_name: string;
@@ -24,52 +24,92 @@ type dataType={
     created_at: string;
 }
 
-type paginationType={
+type paginationType = {
     total: number;
     page: number;
     pages: number;
     limit: number;
 }
 
+type FilterState = {
+    email: string[];
+    jobTitles: string[];
+    domains: string[];
+    personalLinkedinUrls: string[];
+    location: string[];
+    emailFirst: string[];
+    emailSecond: string[];
+};
+
+const INITIAL_FILTER_STATE: FilterState = {
+    email: [],
+    jobTitles: [],
+    domains: [],
+    personalLinkedinUrls: [],
+    emailFirst: [],
+    emailSecond: [],
+    location: [],
+};
+
 
 export default function sells() {
-    const [data,setData] = useState<dataType[]>([]);
+    const [data, setData] = useState<dataType[]>([]);
     const search = useSearchParams();
-    const [pagination,setPagination] = useState<paginationType>({
+    const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
+    const [pagination, setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
         pages: 1,
         limit: 20
     })
-    const [currentPage,setCurrentPage] = useState(1);
-    const [loading,setLoading] = useState(false);
-    const getSalesData= async({page=1,limit=20}:{page?:number,limit?:number})=>{
+    const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const getSalesData = async ({ page = 1, limit = 20 }: { page?: number, limit?: number }) => {
         setLoading(true);
-        try{
+        try {
             const res = await UserService?.getFilteredSalesData({
                 page: page,
-                limit: limit
+                limit: limit,
+                filters
             });
             console.log(res)
-            if(res?.data?.success){
+            if (res?.data?.success) {
                 setData(res?.data?.data);
                 setPagination(res?.data?.meta)
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
-        }finally{
+        } finally {
             setLoading(false);
         }
     }
 
-    useEffect(()=>{
-        console.log("Pathname : ",search)
-        getSalesData({page:currentPage});
-    },[currentPage,search])
+    useEffect(() => {
+        console.log("Pathname : ", search)
+        getSalesData({ page: currentPage });
+    }, [currentPage, search])
+
+
+    useEffect(() => {
+        const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
+
+        // Helper function to parse comma-separated params
+        const parseParam = (param: string | null): string[] =>
+            param ? param.split(',').filter(Boolean) : [];
+
+        initialFilters.email = parseParam(search.get('email'));
+        initialFilters.jobTitles = parseParam(search.get('jobTitles'));
+        initialFilters.domains = parseParam(search.get('domains'));
+        initialFilters.personalLinkedinUrls = parseParam(search.get('personalLinkedinUrl'));
+        initialFilters.location = parseParam(search.get('location'));
+        initialFilters.emailFirst = parseParam(search.get('email_first'));
+        initialFilters.emailSecond = parseParam(search.get('email_second'));
+        setFilters(initialFilters);
+    }, [search]);
 
     return (
         <div className="w-full bg-gray-100 overflow-hidden" style={{ height: 'calc(100vh - 56px)' }}>
-            <SellsDataTable data={data} pagination={pagination} onPageChange={(page)=>setCurrentPage(page)}/>
+            <SellsDataTable data={data} pagination={pagination} onPageChange={(page) => setCurrentPage(page)} />
         </div>
     )
 }

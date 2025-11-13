@@ -7,6 +7,16 @@ const config = {
     },
 };
 
+type FilterState = {
+  email: string[];
+  jobTitles: string[];
+  domains: string[];
+  personalLinkedinUrls: string[];
+  location: string[];
+  emailFirst: string[];
+  emailSecond: string[];
+};
+
 export const UserService = {
     login: async ({ email, password }: { email: string, password: string }, context = null) => {
         // const userToken = CookieHelper.get({ key: "token", context });
@@ -89,8 +99,35 @@ export const UserService = {
         if(filter === 'company_location'){
             return await Fetch.get(`/leads/company_location_text?search=${search}`, config);
         }
+        if(filter === 'industries'){
+            return await Fetch.get(`/leads/industry?search=${search}`, config);
+        }
+        if(filter === 'keyword'){
+            return await Fetch.get(`/leads/keyword?search=${search}`, config);
+        }
+        if(filter === 'technologies'){
+            return await Fetch.get(`/leads/technologies?search=${search}`, config);
+        }
+        if(filter === 'websites'){
+            return await Fetch.get(`/leads/website?search=${search}`, config);
+        }
+        if(filter === 'company_domain'){
+            return await Fetch.get(`/leads/website?search=${search}`, config);
+        }
+        if(filter === 'companyLinkedin'){
+            return await Fetch.get(`/leads/company_linkedin?search=${search}`, config);
+        }
+        if(filter === 'countries'){
+            return await Fetch.get(`/leads/country?search=${search}`, config);
+        }
+        if(filter === 'cities'){
+            return await Fetch.get(`/leads/city?search=${search}`, config);
+        }
+        if(filter === 'states'){
+            return await Fetch.get(`/leads/state?search=${search}`, config);
+        }
     },
-    getFilteredSalesData: async({search,page,limit}:{search?:string,page:number,limit:number})=>{
+    getFilteredSalesData: async({search,page,limit,filters}:{search?:string,page:number,limit:number,filters:FilterState})=>{
         const userToken = CookieHelper.get({ key: "token" });
         const config = {
             headers: {
@@ -98,6 +135,7 @@ export const UserService = {
                 // Authorization: userToken,
             },
         };
+        
         return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&search=${search ||""}`, config);
     },
     getFilteredZoominfoData: async({search,page,limit}:{search?:string,page:number,limit:number})=>{
@@ -109,5 +147,15 @@ export const UserService = {
             },
         };
         return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&search=${search ||""}`, config);
+    },
+    getFilteredApolloData: async({search,page,limit}:{search?:string,page:number,limit:number})=>{
+        const userToken = CookieHelper.get({ key: "token" });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                // Authorization: userToken,
+            },
+        };
+        return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&search=${search ||""}`, config);
     }
 }
