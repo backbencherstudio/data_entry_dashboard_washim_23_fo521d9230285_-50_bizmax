@@ -100,7 +100,7 @@ export default function Navbar() {
     return (
         <div className="border-b border-gray-200 px-4 flex items-center justify-between">
             <Toaster position="top-right"/>
-            <div className="flex items-center gap-2 border border-gray-300 w-fit px-2 py-1 text-sm rounded-md">
+            {/* <div className="flex items-center gap-2 border border-gray-300 w-fit px-2 py-1 text-sm rounded-md">
                 <button type="button" className="cursor-pointer">
                     <IoSearch className="text-gray-500" />
                 </button>
@@ -109,7 +109,7 @@ export default function Navbar() {
                     className="outline-none"
                     placeholder="Search people"
                 />
-            </div>
+            </div> */}
             <div className="flex items-center text-gray-800 font-medium text-center text-nowrap">
                 <Link href="/dashboard" className={`flex justify-center rounded-t-lg py-3 ${currentPage.includes("dashboard") ? "bg-gray-200" : "hover:bg-gray-100"} w-[130px] duration-300`}>Apollo</Link>
                 <Link href="/dashboard/zoominfo" className={`flex justify-center rounded-t-lg py-3 ${currentPage.includes("zoominfo") ? "bg-gray-200" : "hover:bg-gray-100"} w-[130px] duration-300`}>Zoominfo</Link>

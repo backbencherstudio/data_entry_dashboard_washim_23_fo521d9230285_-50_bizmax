@@ -6,7 +6,86 @@ import { PaginationPage } from "./PaginationPage"
 import Loader from "./Loader"
 import { useEffect, useState } from "react"
 
-export default function ApolloDataTable() {
+type dataType= {
+  first_name: string;
+  last_name: string;
+  title: string;
+  company_name: string;
+  company_name_for_emails: string;
+  email: string;
+  email_status: string;
+  primary_email_source: string;
+  primary_email_verification_source: string;
+  email_confidence: string;
+  primary_email_catchall_status: string;
+  primary_email_last_verified_at: string;
+  seniority: string;
+  departments: string;
+  contact_owner: string;
+  work_direct_phone: string;
+  home_phone: string;
+  mobile_phone: string;
+  corporate_phone: string;
+  other_phone: string;
+  stage: string;
+  lists: string;
+  last_contacted: string;
+  account_owner: string;
+  employees: string;
+  industry: string;
+  keywords: string;
+  person_linkedin_url: string;
+  website: string;
+  company_linkedin_url: string;
+  facebook_url: string;
+  twitter_url: string;
+  city: string;
+  state: string;
+  country: string;
+  company_address: string;
+  company_city: string;
+  company_state: string;
+  company_country: string;
+  company_phone: string;
+  technologies: string;
+  annual_revenue: string;
+  total_funding: string;
+  latest_funding: string;
+  latest_funding_amount: string;
+  last_raised_at: string;
+  subsidiary_of: string;
+  email_sent: string;
+  email_open: string;
+  email_bounced: string;
+  replied: string;
+  demoed: string;
+  number_of_retail_locations: string;
+  apollo_contact_id: string;
+  apollo_account_id: string;
+  secondary_email: string;
+  secondary_email_source: string;
+  secondary_email_status: string;
+  secondary_email_verification_source: string;
+  tertiary_email: string;
+  tertiary_email_ource: string;
+  tertiary_email_status: string;
+  tertiary_email_verification_source: string;
+}
+
+type paginationType={
+    total: number;
+    page: number;
+    pages: number;
+    limit: number;
+}
+
+type propType={
+    data: dataType[];
+    pagination: paginationType;
+    onPageChange: (page:number)=> void;
+}
+
+export default function ApolloDataTable({data,pagination,onPageChange}:propType) {
     const [loading, setLoading] = useState(true);
     const isLogin = localStorage?.getItem('islogin') === 'true';
     useEffect(() => {
@@ -884,10 +963,10 @@ export default function ApolloDataTable() {
     return (
         <div className="w-full h-full flex flex-col gap-4 pb-8">
             <div className="flex-1">
-                <DynamicTable data={tableData} columns={columns} />
+                <DynamicTable data={data} columns={columns} />
             </div>
             <div className="w-full">
-                <PaginationPage totalItems={isLogin?1000:20} itemsPerPage={20} onPageChange={(page) => { console.log("Page changed : ", page) }} isLogin={isLogin}/>
+                <PaginationPage totalItems={isLogin?pagination?.total:20} itemsPerPage={pagination?.limit} onPageChange={(page) => { onPageChange(page) }} isLogin={isLogin}/>
             </div>
         </div>
     )

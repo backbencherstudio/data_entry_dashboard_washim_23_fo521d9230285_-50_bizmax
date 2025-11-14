@@ -14,6 +14,6 @@ export const AppConfig = () => ({
     },
 
     // api endpoint
-    apiUrl: `${URL}`,
+    apiUrl: `${URL}/api`,
   },
 });
