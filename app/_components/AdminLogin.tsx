@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { Eye, EyeOff, Lock, Mail, Shield, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { UserService } from '@/userservice/user.service';
+import { CookieHelper } from '@/helper/cookie.helper';
+import toast from 'react-hot-toast';
 
 type propType={
     onForgotPassword: (data:string)=> void;
@@ -69,19 +72,23 @@ export default function AdminLogin({onForgotPassword}:propType) {
     setIsLoading(true);
     
     try {
-      // Simulate API call
-      localStorage?.setItem('islogin',"true");
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Your actual login logic here
-      console.log('Login attempt:', formData);
+      const res = await UserService?.login({
+        email: formData?.email,
+        password: formData?.password
+      });
 
-      
-      // Handle successful login
-      router.push('/dashboard');
-      
+      console.log(res);
+
+      if(res?.data?.success){
+        CookieHelper?.set({key:"access_token",value:res?.data?.authorization?.access_token});
+        toast?.success("Login successful.");
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 300);
+      }
     } catch (error) {
       console.error('Login failed:', error);
+
     } finally {
       setIsLoading(false);
     }

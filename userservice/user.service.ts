@@ -52,7 +52,7 @@ export const UserService = {
             },
         };
 
-        return await Fetch.post(`/login`, { email: email, password: password }, config);
+        return await Fetch.post(`/auth/login`, { email: email, password: password }, config);
     },
 
     me: async () => {
@@ -156,11 +156,11 @@ export const UserService = {
         }
     },
     getFilteredSalesData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: salesFilterState }) => {
-        const userToken = CookieHelper.get({ key: "token" });
+        const userToken = CookieHelper.get({ key: "access_token" });
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                // Authorization: userToken,
+                Authorization: `Bearer ${userToken}`,
             },
         };
         let filter = "";
@@ -177,11 +177,11 @@ export const UserService = {
         return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
     },
     getFilteredZoominfoData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: zoominfoFilterState }) => {
-        const userToken = CookieHelper.get({ key: "token" });
+        const userToken = CookieHelper.get({ key: "access_token" });
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                // Authorization: userToken,
+                Authorization: `Bearer ${userToken}`,
             },
         };
 
@@ -200,11 +200,11 @@ export const UserService = {
         return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
     },
     getFilteredApolloData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: apolloFilterState }) => {
-        const userToken = CookieHelper.get({ key: "token" });
+        const userToken = CookieHelper.get({ key: "access_token" });
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                // Authorization: userToken,
+                Authorization: `Bearer ${userToken}`,
             },
         };
 
@@ -221,5 +221,16 @@ export const UserService = {
         }
 
         return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
-    }
+    },
+
+
+    importCSVdata:async (data:any) => {
+        const userToken = CookieHelper.get({ key: "access_token" });
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userToken}`,
+            },
+        };
+        return await Fetch.post('/leads/import',data, config);
+    },
 }

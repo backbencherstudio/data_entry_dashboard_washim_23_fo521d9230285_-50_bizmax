@@ -4,27 +4,14 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, useCallback, useMemo, ReactElement } from "react";
 import EmailFilter from "./EmailFilter"
 import Filters from "@/app/_components/Filters"
-import PriceRangeSelector from "@/app/_components/PriceRangeSelector";
 import { VscSymbolKeyword } from "react-icons/vsc";
 import { GiArcheryTarget, GiModernCity, GiProfit } from "react-icons/gi";
 import { LiaIndustrySolid } from "react-icons/lia";
-import { GrTechnology, GrDomain } from "react-icons/gr";
 import { CgWebsite } from "react-icons/cg";
-import { CiLinkedin } from "react-icons/ci";
-import { TbWorld } from "react-icons/tb";
-import { BsBank } from "react-icons/bs";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+
 import { FaUsersRays } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
 
-import jobTitleData from '@/public/Data.json'
-import industryData from '@/public/IndustryData.json'
-import websiteData from '@/public/websiteData.json'
-import revenue from '@/public/demoRevenue.json'
-import employeeSize from '@/public/employeeSize.json'
-import locationData from '@/public/demoLocationdata.json'
-import emailData from '@/public/demoEmailData.json'
-import keywordData from "@/public/KeywordData.json";
 import { UserService } from "@/userservice/user.service";
 
 // Types for better type safety
@@ -322,7 +309,6 @@ export default function ZoominfoFilters() {
 
       <div
         className="overflow-y-auto space-y-2 pb-2 text-nowrap"
-        style={{ height: 'calc(100vh - 160px)' }}
       >
         {/* Render all filters dynamically */}
         {filterConfigs.map(renderFilterComponent)}

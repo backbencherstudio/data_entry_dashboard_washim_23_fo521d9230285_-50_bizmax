@@ -13,7 +13,8 @@ import { AlertCircle, CheckCircle2, Download } from "lucide-react";
 import Link from "next/link";
 import { IoCopyOutline } from "react-icons/io5";
 import LogoutConfirmationPopup from "@/app/_components/LogoutConfirmationPopup";
-import toast,{Toaster} from "react-hot-toast";
+import toast,{Toaster, useToaster} from "react-hot-toast";
+import { CookieHelper } from "@/helper/cookie.helper";
 
 export default function Navbar() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -44,11 +45,6 @@ export default function Navbar() {
             // Simulate API call for export
             await new Promise(resolve => setTimeout(resolve, 2000));
 
-            // Your actual export logic here
-            // This could be:
-            // - Generating a CSV file
-            // - Calling an API endpoint
-            // - Downloading data from your backend
 
             setExportStatus('success');
 
@@ -65,8 +61,10 @@ export default function Navbar() {
     };
 
     useEffect(() => {
-        const login = localStorage.getItem('islogin');
-        setIsLogin(login === "true");
+        const userToken = CookieHelper.get({ key: "access_token" });
+        if(userToken){
+            setIsLogin(true);
+        }
     }, [])
 
     useEffect(() => {
@@ -117,10 +115,10 @@ export default function Navbar() {
             </div>
             {isLogin ?
                 <div className="flex gap-4">
-                    <button type="button" onClick={() => setIsPopupOpen(true)} className="px-4 flex items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
+                    <Link href="/upload" className="px-4 flex items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
                         <FaFileUpload className="text-xs" />
                         <span>Import</span>
-                    </button>
+                    </Link>
                     <button type="button" onClick={() => setIsExportPopupOpen(true)} className="px-4 flex items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
                         <FaDownload />
                         <span>Export</span>

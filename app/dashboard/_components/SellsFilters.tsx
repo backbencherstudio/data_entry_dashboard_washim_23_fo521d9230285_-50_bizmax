@@ -285,7 +285,6 @@ export default function SellsFilters() {
 
       <div
         className="overflow-y-auto space-y-2 pb-2 text-nowrap"
-        style={{ height: 'calc(100vh - 160px)' }}
       >
         {/* Render all filters dynamically */}
         {filterConfigs.map(renderFilterComponent)}

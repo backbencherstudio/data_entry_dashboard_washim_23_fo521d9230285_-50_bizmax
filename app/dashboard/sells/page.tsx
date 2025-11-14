@@ -4,6 +4,7 @@ import SellsDataTable from "@/app/_components/SellsDataTable"
 import { UserService } from "@/userservice/user.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTotalData } from "@/hooks/TotalDataContext";
 
 
 type dataType = {
@@ -55,6 +56,7 @@ const INITIAL_FILTER_STATE: FilterState = {
 export default function sells() {
     const [data, setData] = useState<dataType[]>([]);
     const search = useSearchParams();
+    const { totalData, updateTotalData, resetTotalData } = useTotalData();
     const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
     const [pagination, setPagination] = useState<paginationType>({
         total: 1,
@@ -76,6 +78,7 @@ export default function sells() {
             if (res?.data?.success) {
                 setData(res?.data?.data);
                 setPagination(res?.data?.meta)
+                updateTotalData(res?.data?.meta?.total)
             }
         } catch (err) {
             console.log(err);
@@ -103,7 +106,9 @@ export default function sells() {
         initialFilters.city = parseParam(search.get('location'),'|');
         initialFilters.email_first = parseParam(search.get('email_first'));
         initialFilters.email_second = parseParam(search.get('email_second'));
+        setCurrentPage(1)
         setFilters(initialFilters);
+
     }, [search]);
 
 

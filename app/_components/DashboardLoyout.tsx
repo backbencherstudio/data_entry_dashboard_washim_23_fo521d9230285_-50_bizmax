@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import Navbar from "../dashboard/_components/Navbar";
 import Sidebar from "../dashboard/_components/Sidebar";
+import { TotalDataProvider } from "@/hooks/TotalDataContext";
 
-export default function DashboardLayout({children}:{children: React.ReactNode}) {
-    const [loading,setLoading] = useState(true);
-    useEffect(()=>{
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
         setLoading(false);
-    },[])
+    }, [])
 
     if (loading) {
         return (
@@ -18,12 +19,14 @@ export default function DashboardLayout({children}:{children: React.ReactNode}) 
         )
     }
     return (
-        <div className="flex w-full max-w-[1920px] h-screen overflow-hidden">
-            <Sidebar />
-            <div className="flex-1">
-                <Navbar />
-                {children}
+        <TotalDataProvider>
+            <div className="flex w-full max-w-[1920px] h-screen overflow-hidden">
+                <Sidebar />
+                <div className="flex-1">
+                    <Navbar />
+                    {children}
+                </div>
             </div>
-        </div>
+        </TotalDataProvider>
     )
 }
