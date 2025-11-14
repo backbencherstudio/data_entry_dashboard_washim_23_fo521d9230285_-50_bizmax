@@ -74,6 +74,13 @@ export default function Filters({
 
   const selectedTitles = getSelectedJobTitles();
 
+  // if(data && title === "Keyword"){
+  //   console.log("Filter data : ",data);
+  //   return(
+  //     <div></div>
+  //   )
+  // }
+
   return (
     <div className={`${open ? "border border-gray-300" : "border-b border-gray-300"} w-full duration-200`}>
       <button

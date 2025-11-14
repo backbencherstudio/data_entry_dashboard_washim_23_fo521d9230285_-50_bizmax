@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import ApolloDataTable from "../_components/ApolloDataTable"
 import { UserService } from "@/userservice/user.service";
+import { useSearchParams } from "next/navigation";
 
 
 type dataType= {
@@ -79,6 +80,36 @@ type paginationType={
     limit: number;
 }
 
+type FilterState = {
+  email: string[];
+  job_titles: string[];
+  industry: string[];
+  keyword: string[];
+  technologies: string[];
+  website: string[];
+  company_domain: string[];
+  company_linkedin: string[];
+  country: string[];
+  city: string[];
+  state: string[];
+  annual_revenue:string[];
+};
+
+const INITIAL_FILTER_STATE: FilterState = {
+  email: [],
+  job_titles: [],
+  industry: [],
+  keyword: [],
+  technologies: [],
+  website: [],
+  company_domain: [],
+  company_linkedin: [],
+  country: [],
+  city: [],
+  state: [],
+  annual_revenue: [],
+};
+
 
 export default function sells() {
     const [data,setData] = useState<dataType[]>([])
@@ -90,12 +121,15 @@ export default function sells() {
     })
     const [currentPage,setCurrentPage] = useState(1);
     const [loading,setLoading] = useState(false);
+    const searchParams = useSearchParams();
+    const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
     const getSalesData= async({page=1,limit=20}:{page?:number,limit?:number})=>{
         setLoading(true);
         try{
             const res = await UserService?.getFilteredApolloData({
                 page: page,
-                limit: limit
+                limit: limit,
+                filters
             });
             console.log(res)
             if(res?.data?.success){
@@ -111,7 +145,33 @@ export default function sells() {
 
     useEffect(()=>{
         getSalesData({page:currentPage});
-    },[currentPage])
+    },[currentPage,filters])
+
+
+    useEffect(() => {
+        const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
+        console.log("Filter chenged.")
+        // Helper function to parse comma-separated params
+        const parseParam = (param: string | null,separator?:string): string[] =>
+          param ? param.split(separator || ',').filter(Boolean) : [];
+    
+        initialFilters.email = parseParam(searchParams.get('email'));
+        initialFilters.job_titles = parseParam(searchParams.get('jobTitles'));
+        initialFilters.industry = parseParam(searchParams.get('industries'));
+        initialFilters.keyword = parseParam(searchParams.get('keywords'),"|");
+        initialFilters.technologies = parseParam(searchParams.get('technologies'));
+        initialFilters.website = parseParam(searchParams.get('websites'));
+        initialFilters.company_domain = parseParam(searchParams.get('domains'));
+        initialFilters.company_linkedin = parseParam(searchParams.get('companyLinkedin'));
+        initialFilters.country = parseParam(searchParams.get('countries'));
+        initialFilters.city = parseParam(searchParams.get('cities'));
+        initialFilters.state = parseParam(searchParams.get('states'));
+        initialFilters.annual_revenue = parseParam(searchParams.get('annual_revenue'));
+    
+        setFilters(initialFilters);
+      }, [searchParams]);
+
+
     return(
         <div className="w-full bg-gray-100 overflow-hidden" style={{height: 'calc(100vh - 56px)'}}>
             <ApolloDataTable data={data} pagination={pagination} onPageChange={(page)=>setCurrentPage(page)}/>

@@ -17,6 +17,31 @@ type salesFilterState = {
     email_second: string[];
 };
 
+type zoominfoFilterState = {
+    email: string[];
+    lead_titles: string[];
+    company_website: string[];
+    company_industry: string[];
+    company_size: string[];
+    revenue_range: string[];
+    company_location_text: string[];
+    keyword: string[];
+};
+type apolloFilterState = {
+    email: string[];
+    job_titles: string[];
+    industry: string[];
+    keyword: string[];
+    technologies: string[];
+    website: string[];
+    company_domain: string[];
+    company_linkedin: string[];
+    country: string[];
+    city: string[];
+    state: string[];
+    annual_revenue: string[];
+};
+
 export const UserService = {
     login: async ({ email, password }: { email: string, password: string }, context = null) => {
         // const userToken = CookieHelper.get({ key: "token", context });
@@ -126,6 +151,9 @@ export const UserService = {
         if (filter === 'states') {
             return await Fetch.get(`/leads/state?search=${search}`, config);
         }
+        if (filter === 'annual_revenue') {
+            return await Fetch.get(`/leads/annual_revenue?search=${search}`, config);
+        }
     },
     getFilteredSalesData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: salesFilterState }) => {
         const userToken = CookieHelper.get({ key: "token" });
@@ -135,8 +163,28 @@ export const UserService = {
                 // Authorization: userToken,
             },
         };
+        let filter = "";
+        Object.entries(filters).forEach(item => {
+            item[1]?.forEach(entry => {
+                if (entry) {
+                    filter += `${item[0]}=${entry?.trim()}&`;
+                }
+            })
+        });
+        if (filter.endsWith('&')) {
+            filter = filter.slice(0, -1);
+        }
+        return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
+    },
+    getFilteredZoominfoData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: zoominfoFilterState }) => {
+        const userToken = CookieHelper.get({ key: "token" });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                // Authorization: userToken,
+            },
+        };
 
-        console.log(filters)
         let filter = "";
         Object.entries(filters).forEach(item => {
             item[1]?.forEach(entry => {
@@ -149,10 +197,9 @@ export const UserService = {
             filter = filter.slice(0, -1);
         }
 
-        // console.log("Filters : ", filter);
-        return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
+        return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
     },
-    getFilteredZoominfoData: async ({ search, page, limit }: { search?: string, page: number, limit: number }) => {
+    getFilteredApolloData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: apolloFilterState }) => {
         const userToken = CookieHelper.get({ key: "token" });
         const config = {
             headers: {
@@ -160,16 +207,19 @@ export const UserService = {
                 // Authorization: userToken,
             },
         };
-        return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&search=${search || ""}`, config);
-    },
-    getFilteredApolloData: async ({ search, page, limit }: { search?: string, page: number, limit: number }) => {
-        const userToken = CookieHelper.get({ key: "token" });
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                // Authorization: userToken,
-            },
-        };
-        return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&search=${search || ""}`, config);
+
+        let filter = "";
+        Object.entries(filters).forEach(item => {
+            item[1]?.forEach(entry => {
+                if (entry) {
+                    filter += `${item[0]}=${entry?.trim()}&`;
+                }
+            })
+        });
+        if (filter.endsWith('&')) {
+            filter = filter.slice(0, -1);
+        }
+
+        return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
     }
 }
