@@ -165,7 +165,8 @@ export default function SellsFilters() {
     if (filters.email.length > 0) params.set('email', filters.email.join(','));
     if (filters.jobTitles.length > 0) params.set('jobTitles', filters.jobTitles.join(','));
     if (filters?.personalLinkedinUrls?.length > 0) params.set('personalLinkedinUrl', filters?.personalLinkedinUrls.join(','));
-    if (filters?.location?.length > 0) params.set('location', filters?.location.join(','));
+    if (filters?.location?.length > 0) params.set('location', filters?.location.join('|'));
+    if (filters?.domains?.length > 0) params.set('domains', filters?.domains.join(','));
     if (filters?.emailFirst?.length > 0) params.set('email_first', filters?.emailFirst.join(','));
     if (filters?.emailSecond?.length > 0) params.set('email_second', filters?.emailSecond.join(','));
 

@@ -33,22 +33,22 @@ type paginationType = {
 
 type FilterState = {
     email: string[];
-    jobTitles: string[];
-    domains: string[];
-    personalLinkedinUrls: string[];
-    location: string[];
-    emailFirst: string[];
-    emailSecond: string[];
+    job_title: string[];
+    company_domain: string[];
+    urls: string[];
+    city: string[];
+    email_first: string[];
+    email_second: string[];
 };
 
 const INITIAL_FILTER_STATE: FilterState = {
     email: [],
-    jobTitles: [],
-    domains: [],
-    personalLinkedinUrls: [],
-    emailFirst: [],
-    emailSecond: [],
-    location: [],
+    job_title: [],
+    company_domain: [],
+    urls: [],
+    email_first: [],
+    email_second: [],
+    city: [],
 };
 
 
@@ -85,27 +85,27 @@ export default function sells() {
     }
 
     useEffect(() => {
-        console.log("Pathname : ", search)
         getSalesData({ page: currentPage });
-    }, [currentPage, search])
+    }, [currentPage, filters])
 
 
     useEffect(() => {
         const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
 
         // Helper function to parse comma-separated params
-        const parseParam = (param: string | null): string[] =>
-            param ? param.split(',').filter(Boolean) : [];
+        const parseParam = (param: string | null,separator?:string): string[] =>
+            param ? param.split(separator||',').filter(Boolean) : [];
 
         initialFilters.email = parseParam(search.get('email'));
-        initialFilters.jobTitles = parseParam(search.get('jobTitles'));
-        initialFilters.domains = parseParam(search.get('domains'));
-        initialFilters.personalLinkedinUrls = parseParam(search.get('personalLinkedinUrl'));
-        initialFilters.location = parseParam(search.get('location'));
-        initialFilters.emailFirst = parseParam(search.get('email_first'));
-        initialFilters.emailSecond = parseParam(search.get('email_second'));
+        initialFilters.job_title = parseParam(search.get('jobTitles'));
+        initialFilters.company_domain = parseParam(search.get('domains'));
+        initialFilters.urls = parseParam(search.get('personalLinkedinUrl'));
+        initialFilters.city = parseParam(search.get('location'),'|');
+        initialFilters.email_first = parseParam(search.get('email_first'));
+        initialFilters.email_second = parseParam(search.get('email_second'));
         setFilters(initialFilters);
     }, [search]);
+
 
     return (
         <div className="w-full bg-gray-100 overflow-hidden" style={{ height: 'calc(100vh - 56px)' }}>

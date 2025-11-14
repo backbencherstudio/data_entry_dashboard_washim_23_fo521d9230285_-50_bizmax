@@ -68,7 +68,7 @@ export default function Filters({
 
   const getSelectedJobTitles = () => {
     return selectedData.map(jobId =>
-      data.find(item => item.id === jobId)?.name
+      data.find(item => item.name === jobId)?.name
     ).filter(Boolean) as string[];
   };
 
@@ -125,14 +125,14 @@ export default function Filters({
                 <CommandGroup>
                   {data.map((item) => (
                     <CommandItem
-                      key={item.id}
+                      key={item.name}
                       value={item.name}
-                      onSelect={() => handleSelect(item.id)}
+                      onSelect={() => handleSelect(item.name)}
                     >
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
-                          selectedData.includes(item.id) ? "opacity-100" : "opacity-0"
+                          selectedData.includes(item.name) ? "opacity-100" : "opacity-0"
                         )}
                       />
                       {item.name}
