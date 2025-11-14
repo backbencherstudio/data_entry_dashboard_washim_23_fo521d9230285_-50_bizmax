@@ -2,9 +2,19 @@
 
 import ZoominfoDataTable from "@/app/_components/ZoominfoDataTable"
 import { UserService } from "@/userservice/user.service";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
+type FilterState = {
+    email: string[];
+    lead_titles: string[];
+    company_website: string[];
+    company_industry: string[];
+    company_size: string[];
+    revenue_range: string[];
+    company_location_text: string[];
+    keyword: string[];
+};
 
 type dataType = {
     id: string;
@@ -36,7 +46,18 @@ type dataType = {
     company_size_key: string;
 };
 
-type paginationType={
+const INITIAL_FILTER_STATE: FilterState = {
+    email: [],
+    lead_titles: [],
+    company_website: [],
+    company_industry: [],
+    company_size: [],
+    revenue_range: [],
+    company_location_text: [],
+    keyword: []
+};
+
+type paginationType = {
     total: number;
     page: number;
     pages: number;
@@ -45,40 +66,63 @@ type paginationType={
 
 
 export default function sells() {
-    const [data,setData] = useState<dataType[]>([])
-    const [pagination,setPagination] = useState<paginationType>({
+    const [data, setData] = useState<dataType[]>([])
+    const [pagination, setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
         pages: 1,
         limit: 20
     })
-    const [currentPage,setCurrentPage] = useState(1);
-    const [loading,setLoading] = useState(false);
-    const getSalesData= async({page=1,limit=20}:{page?:number,limit?:number})=>{
+    const [currentPage, setCurrentPage] = useState(1);
+    const searchParams = useSearchParams();
+    const [loading, setLoading] = useState(false);
+    const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
+    const getSalesData = async ({ page = 1, limit = 20 }: { page?: number, limit?: number }) => {
         setLoading(true);
-        try{
+        try {
             const res = await UserService?.getFilteredZoominfoData({
                 page: page,
-                limit: limit
+                limit: limit,
+                filters
             });
             console.log(res)
-            if(res?.data?.success){
+            if (res?.data?.success) {
                 setData(res?.data?.data);
                 setPagination(res?.data?.meta)
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
-        }finally{
+        } finally {
             setLoading(false);
         }
     }
 
-    useEffect(()=>{
-        getSalesData({page:currentPage});
-    },[currentPage])
+    useEffect(() => {
+        getSalesData({ page: currentPage });
+    }, [currentPage,filters])
+
+    useEffect(() => {
+        const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
+
+        // Helper function to parse comma-separated params
+        const parseParam = (param: string | null,separator?:string): string[] =>
+            param ? param.split(separator || ',').filter(Boolean) : [];
+
+        initialFilters.email = parseParam(searchParams.get('email'));
+        initialFilters.lead_titles = parseParam(searchParams.get('lead_title'));
+        initialFilters.company_website = parseParam(searchParams.get('company_website'));
+        initialFilters.company_industry = parseParam(searchParams.get('industry'));
+        initialFilters.keyword = parseParam(searchParams.get('keywords'));
+        initialFilters.company_size = parseParam(searchParams.get('employee_size'),'|');
+        initialFilters.revenue_range = parseParam(searchParams.get('company_revenue'));
+        initialFilters.company_location_text = parseParam(searchParams.get('location'),"|");
+        setFilters(initialFilters);
+    }, [searchParams]);
+
+
     return (
         <div className="w-full bg-gray-100 overflow-hidden" style={{ height: 'calc(100vh - 56px)' }}>
-            <ZoominfoDataTable data={data} pagination={pagination} onPageChange={(page)=>setCurrentPage(page)}/>
+            <ZoominfoDataTable data={data} pagination={pagination} onPageChange={(page) => setCurrentPage(page)} />
         </div>
     )
 }

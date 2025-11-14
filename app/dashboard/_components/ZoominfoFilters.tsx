@@ -159,17 +159,17 @@ export default function ZoominfoFilters() {
     const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
 
     // Helper function to parse comma-separated params
-    const parseParam = (param: string | null): string[] =>
-      param ? param.split(',').filter(Boolean) : [];
+    const parseParam = (param: string | null,separator?:string): string[] =>
+      param ? param.split(separator||',').filter(Boolean) : [];
 
     initialFilters.email = parseParam(searchParams.get('email'));
     initialFilters.leadTitle = parseParam(searchParams.get('lead_title'));
     initialFilters.companyWebsite = parseParam(searchParams.get('company_website'));
     initialFilters.industry = parseParam(searchParams.get('industry'));
     initialFilters.keywords = parseParam(searchParams.get('keywords'));
-    initialFilters.employeeSize = parseParam(searchParams.get('employee_size'));
+    initialFilters.employeeSize = parseParam(searchParams.get('employee_size'),"|");
     initialFilters.companyRevenue = parseParam(searchParams.get('company_revenue'));
-    initialFilters.location = parseParam(searchParams.get('location'));
+    initialFilters.location = parseParam(searchParams.get('location'),"|");
     setFilters(initialFilters);
   }, []);
 
@@ -184,8 +184,8 @@ export default function ZoominfoFilters() {
     if (filters.companyRevenue.length > 0) params.set('company_revenue', filters.companyRevenue.join(','));
     if (filters.industry.length > 0) params.set('industry', filters.industry.join(','));
     if (filters.keywords.length > 0) params.set('keywords', filters.keywords.join(','));
-    if (filters.employeeSize.length > 0) params.set('employee_size', filters.employeeSize.join(','));
-    if (filters.location.length > 0) params.set('location', filters.location.join(','));
+    if (filters.employeeSize.length > 0) params.set('employee_size', filters.employeeSize.join('|'));
+    if (filters.location.length > 0) params.set('location', filters.location.join('|'));
 
     // Update URL without page refresh - use replace instead of push to avoid adding to history
     const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;

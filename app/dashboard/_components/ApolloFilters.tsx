@@ -31,34 +31,32 @@ import { UserService } from "@/userservice/user.service";
 // Types for better type safety
 type FilterState = {
   email: string[];
-  jobTitles: string[];
-  industries: string[];
+  job_titles: string[];
+  industry: string[];
   keyword: string[];
   technologies: string[];
-  websites: string[];
+  website: string[];
   company_domain: string[];
-  companyLinkedin: string[];
-  countries: string[];
-  cities: string[];
-  states: string[];
-  minAnnualRevenue: number;
-  maxAnnualRevenue: number;
+  company_linkedin: string[];
+  country: string[];
+  city: string[];
+  state: string[];
+  annual_revenue:string[];
 };
 
 const INITIAL_FILTER_STATE: FilterState = {
   email: [],
-  jobTitles: [],
-  industries: [],
+  job_titles: [],
+  industry: [],
   keyword: [],
   technologies: [],
-  websites: [],
+  website: [],
   company_domain: [],
-  companyLinkedin: [],
-  countries: [],
-  cities: [],
-  states: [],
-  minAnnualRevenue: 0,
-  maxAnnualRevenue: 1000
+  company_linkedin: [],
+  country: [],
+  city: [],
+  state: [],
+  annual_revenue: [],
 };
 
 type filterType = {
@@ -114,6 +112,7 @@ export default function ApolloFilters() {
   const [technology, setTechnology] = useState<filterType[]>([])
   const [website, setWebsite] = useState<filterType[]>([])
   const [states, setStates] = useState<filterType[]>([])
+  const [annualRevenue, setAnnualRevenue] = useState<filterType[]>([])
 
 
     const getFilters = async (search: string) => {
@@ -136,7 +135,7 @@ export default function ApolloFilters() {
             setIndustry(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.industry })));
           }
           if (searchItem?.key === "keyword" || search === "keyword") {
-            setKeyword(res?.data?.data?.map((item: any) => ({ id: item, name: item })));
+            setKeyword(res?.data?.data?.map((item: any) => ({ id: item?.keywords, name: item?.keywords })));
           }
           if (searchItem?.key === "technologies" || search === "technologies") {
             setTechnology(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.technologies })));
@@ -155,6 +154,9 @@ export default function ApolloFilters() {
           }
           if (searchItem?.key === "states" || search === "states") {
             setStates(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.state })));
+          }
+          if (searchItem?.key === "annual_revenue" || search === "annual_revenue") {
+            setAnnualRevenue(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.annual_revenue })));
           }
         }
       } catch (err) {
@@ -180,6 +182,7 @@ export default function ApolloFilters() {
       getFilters('countries');
       getFilters('cities');
       getFilters('states');
+      getFilters('annual_revenue');
     }, [])
 
 
@@ -190,22 +193,21 @@ export default function ApolloFilters() {
     const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
 
     // Helper function to parse comma-separated params
-    const parseParam = (param: string | null): string[] =>
-      param ? param.split(',').filter(Boolean) : [];
+    const parseParam = (param: string | null,separator?:string): string[] =>
+      param ? param.split(separator || ',').filter(Boolean) : [];
 
     initialFilters.email = parseParam(searchParams.get('email'));
-    initialFilters.jobTitles = parseParam(searchParams.get('jobTitles'));
-    initialFilters.industries = parseParam(searchParams.get('industries'));
-    initialFilters.keyword = parseParam(searchParams.get('keywords'));
+    initialFilters.job_titles = parseParam(searchParams.get('jobTitles'));
+    initialFilters.industry = parseParam(searchParams.get('industries'));
+    initialFilters.keyword = parseParam(searchParams.get('keywords'),"|");
     initialFilters.technologies = parseParam(searchParams.get('technologies'));
-    initialFilters.websites = parseParam(searchParams.get('websites'));
+    initialFilters.website = parseParam(searchParams.get('websites'));
     initialFilters.company_domain = parseParam(searchParams.get('domains'));
-    initialFilters.companyLinkedin = parseParam(searchParams.get('companyLinkedin'));
-    initialFilters.countries = parseParam(searchParams.get('countries'));
-    initialFilters.cities = parseParam(searchParams.get('cities'));
-    initialFilters.states = parseParam(searchParams.get('states'));
-    initialFilters.minAnnualRevenue = Number(searchParams.get('min_annual_revenue')) || 0;
-    initialFilters.maxAnnualRevenue = Number(searchParams.get('max_annual_revenue')) || 1000;
+    initialFilters.company_linkedin = parseParam(searchParams.get('companyLinkedin'));
+    initialFilters.country = parseParam(searchParams.get('countries'));
+    initialFilters.city = parseParam(searchParams.get('cities'));
+    initialFilters.state = parseParam(searchParams.get('states'));
+    initialFilters.annual_revenue = parseParam(searchParams.get('annual_revenue'));
 
     setFilters(initialFilters);
   }, []);
@@ -216,18 +218,17 @@ export default function ApolloFilters() {
 
     // Add all filters to URL params only if they have values
     if (filters.email.length > 0) params.set('email', filters.email.join(','));
-    if (filters.jobTitles.length > 0) params.set('jobTitles', filters.jobTitles.join(','));
-    if (filters.industries.length > 0) params.set('industries', filters.industries.join(','));
-    if (filters.keyword.length > 0) params.set('keywords', filters.keyword.join(','));
+    if (filters.job_titles.length > 0) params.set('jobTitles', filters.job_titles.join(','));
+    if (filters.industry.length > 0) params.set('industries', filters.industry.join(','));
+    if (filters.keyword.length > 0) params.set('keywords', filters.keyword.join('|'));
     if (filters.technologies.length > 0) params.set('technologies', filters.technologies.join(','));
-    if (filters.websites.length > 0) params.set('websites', filters.websites.join(','));
+    if (filters.website.length > 0) params.set('websites', filters.website.join(','));
     if (filters.company_domain.length > 0) params.set('domains', filters.company_domain.join(','));
-    if (filters.companyLinkedin.length > 0) params.set('companyLinkedin', filters.companyLinkedin.join(','));
-    if (filters.countries.length > 0) params.set('countries', filters.countries.join(','));
-    if (filters.cities.length > 0) params.set('cities', filters.cities.join(','));
-    if (filters.states.length > 0) params.set('states', filters.states.join(','));
-    if (filters.minAnnualRevenue > 0) params.set('min_annual_revenue', filters.minAnnualRevenue.toString());
-    if (filters.maxAnnualRevenue > 0 && filters.maxAnnualRevenue !== 1000) params.set('max_annual_revenue', filters.maxAnnualRevenue.toString());
+    if (filters.company_linkedin.length > 0) params.set('companyLinkedin', filters.company_linkedin.join(','));
+    if (filters.country.length > 0) params.set('countries', filters.country.join(','));
+    if (filters.city.length > 0) params.set('cities', filters.city.join(','));
+    if (filters.state.length > 0) params.set('states', filters.state.join(','));
+    if (filters.annual_revenue.length > 0) params.set('annual_revenue', filters.annual_revenue.join(','));
 
     // Update URL without page refresh - use replace instead of push to avoid adding to history
     const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
@@ -262,8 +263,8 @@ export default function ApolloFilters() {
         title: "Job title",
         subTitle: "Job titles",
         Icon: <GiArcheryTarget />,
-        selectedData: filters.jobTitles,
-        onUpDate: (data: string[]) => updateFilter('jobTitles', data)
+        selectedData: filters.job_titles,
+        onUpDate: (data: string[]) => updateFilter('job_titles', data)
       }
     },
     {
@@ -274,8 +275,8 @@ export default function ApolloFilters() {
         title: "Industry",
         subTitle: "Industries",
         Icon: <LiaIndustrySolid />,
-        selectedData: filters.industries,
-        onUpDate: (data: string[]) => updateFilter('industries', data)
+        selectedData: filters.industry,
+        onUpDate: (data: string[]) => updateFilter('industry', data)
       }
     },
     {
@@ -310,8 +311,8 @@ export default function ApolloFilters() {
         title: "Website",
         subTitle: "Websites",
         Icon: <CgWebsite />,
-        selectedData: filters.websites,
-        onUpDate: (data: string[]) => updateFilter('websites', data)
+        selectedData: filters.website,
+        onUpDate: (data: string[]) => updateFilter('website', data)
       }
     },
     {
@@ -334,8 +335,8 @@ export default function ApolloFilters() {
         title: "Company linkedin url",
         subTitle: "Company urls",
         Icon: <CiLinkedin />,
-        selectedData: filters.companyLinkedin,
-        onUpDate: (data: string[]) => updateFilter('companyLinkedin', data)
+        selectedData: filters.company_linkedin,
+        onUpDate: (data: string[]) => updateFilter('company_linkedin', data)
       }
     },
     {
@@ -346,8 +347,8 @@ export default function ApolloFilters() {
         title: "Country",
         subTitle: "Countries",
         Icon: <TbWorld />,
-        selectedData: filters.countries,
-        onUpDate: (data: string[]) => updateFilter('countries', data)
+        selectedData: filters.country,
+        onUpDate: (data: string[]) => updateFilter('country', data)
       }
     },
     {
@@ -358,8 +359,8 @@ export default function ApolloFilters() {
         title: "City",
         subTitle: "Cities",
         Icon: <GiModernCity />,
-        selectedData: filters.cities,
-        onUpDate: (data: string[]) => updateFilter('cities', data)
+        selectedData: filters.city,
+        onUpDate: (data: string[]) => updateFilter('city', data)
       }
     },
     {
@@ -370,11 +371,23 @@ export default function ApolloFilters() {
         title: "State",
         subTitle: "States",
         Icon: <BsBank />,
-        selectedData: filters.states,
-        onUpDate: (data: string[]) => updateFilter('states', data)
+        selectedData: filters.state,
+        onUpDate: (data: string[]) => updateFilter('state', data)
+      }
+    },
+    {
+      type: 'regular',
+      key: 'annual_revenue',
+      props: {
+        data: annualRevenue,
+        title: "Annual revenue",
+        subTitle: "Revenue",
+        Icon: <BsBank />,
+        selectedData: filters.annual_revenue,
+        onUpDate: (data: string[]) => updateFilter('annual_revenue', data)
       }
     }
-  ], [filters, updateFilter,jobTitles,industry,keyword,technology,website,companyDomain,linkedInUrl,country,city,states]);
+  ], [filters, updateFilter,jobTitles,industry,keyword,technology,website,companyDomain,linkedInUrl,country,city,states,annualRevenue]);
 
   // Render the appropriate component based on filter type
   const renderFilterComponent = (config: FilterConfig) => {
@@ -406,7 +419,7 @@ export default function ApolloFilters() {
         {filterConfigs.map(renderFilterComponent)}
 
         {/* Annual Revenue Filter */}
-        <div className={`${openRevenue ? "border border-gray-300" : "border-b border-gray-300"} w-full duration-200`}>
+        {/* <div className={`${openRevenue ? "border border-gray-300" : "border-b border-gray-300"} w-full duration-200`}>
           <button
             type="button"
             className={`flex cursor-pointer px-4 pt-4 justify-between items-center w-full outline-none ${openRevenue ? "text-blue-300" : "text-gray-500"
@@ -429,7 +442,7 @@ export default function ApolloFilters() {
               }}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
