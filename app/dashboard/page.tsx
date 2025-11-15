@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ApolloDataTable from "../_components/ApolloDataTable"
 import { UserService } from "@/userservice/user.service";
 import { useSearchParams } from "next/navigation";
+import { useTotalData } from "@/hooks/TotalDataContext";
 
 
 type dataType= {
@@ -112,7 +113,8 @@ const INITIAL_FILTER_STATE: FilterState = {
 
 
 export default function sells() {
-    const [data,setData] = useState<dataType[]>([])
+    const [data,setData] = useState<dataType[]>([]);
+    const { totalData, updateTotalData, resetTotalData } = useTotalData();
     const [pagination,setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
@@ -134,10 +136,12 @@ export default function sells() {
             console.log(res)
             if(res?.data?.success){
                 setData(res?.data?.data);
-                setPagination(res?.data?.meta)
+                setPagination(res?.data?.meta);
+                updateTotalData(res?.data?.meta?.total)
             }
         }catch(err){
             console.log(err);
+            updateTotalData(0)
         }finally{
             setLoading(false);
         }
@@ -167,7 +171,7 @@ export default function sells() {
         initialFilters.city = parseParam(searchParams.get('cities'));
         initialFilters.state = parseParam(searchParams.get('states'));
         initialFilters.annual_revenue = parseParam(searchParams.get('annual_revenue'));
-    
+        setCurrentPage(1)
         setFilters(initialFilters);
       }, [searchParams]);
 

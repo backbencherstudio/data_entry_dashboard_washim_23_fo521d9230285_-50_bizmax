@@ -5,6 +5,7 @@ import tableData from '@/public/tableData.json'
 import { PaginationPage } from "./PaginationPage"
 import Loader from "./Loader"
 import { useEffect, useState } from "react"
+import { CookieHelper } from "@/helper/cookie.helper"
 
 type dataType= {
   first_name: string;
@@ -87,7 +88,14 @@ type propType={
 
 export default function ApolloDataTable({data,pagination,onPageChange}:propType) {
     const [loading, setLoading] = useState(true);
-    const isLogin = localStorage?.getItem('islogin') === 'true';
+    const [isLogin,setIsLogin] = useState(false);
+    useEffect(() => {
+            setLoading(false);
+            const userToken = CookieHelper.get({ key: "access_token" });
+            if(userToken){
+                setIsLogin(true);
+            }
+        }, [pagination])
     useEffect(() => {
         setLoading(false);
     }, [])
@@ -966,7 +974,7 @@ export default function ApolloDataTable({data,pagination,onPageChange}:propType)
                 <DynamicTable data={data} columns={columns} />
             </div>
             <div className="w-full">
-                <PaginationPage totalItems={isLogin?pagination?.total:20} itemsPerPage={pagination?.limit} onPageChange={(page) => { onPageChange(page) }} isLogin={isLogin}/>
+                <PaginationPage totalItems={pagination?.total} itemsPerPage={pagination?.limit} onPageChange={(page) => { onPageChange(page) }} isLogin={isLogin}/>
             </div>
         </div>
     )

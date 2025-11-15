@@ -4,6 +4,7 @@ import ZoominfoDataTable from "@/app/_components/ZoominfoDataTable"
 import { UserService } from "@/userservice/user.service";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTotalData } from "@/hooks/TotalDataContext";
 
 type FilterState = {
     email: string[];
@@ -67,6 +68,7 @@ type paginationType = {
 
 export default function sells() {
     const [data, setData] = useState<dataType[]>([])
+    const { totalData, updateTotalData, resetTotalData } = useTotalData();
     const [pagination, setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
@@ -89,6 +91,7 @@ export default function sells() {
             if (res?.data?.success) {
                 setData(res?.data?.data);
                 setPagination(res?.data?.meta)
+                updateTotalData(res?.data?.meta?.total)
             }
         } catch (err) {
             console.log(err);
@@ -116,6 +119,7 @@ export default function sells() {
         initialFilters.company_size = parseParam(searchParams.get('employee_size'),'|');
         initialFilters.revenue_range = parseParam(searchParams.get('company_revenue'));
         initialFilters.company_location_text = parseParam(searchParams.get('location'),"|");
+        setCurrentPage(1)
         setFilters(initialFilters);
     }, [searchParams]);
 
