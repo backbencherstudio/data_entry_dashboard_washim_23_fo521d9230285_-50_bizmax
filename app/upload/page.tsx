@@ -122,26 +122,22 @@ const fileHeaders: Record<FileType, string[]> = {
         'lead_divison',
         'lead_titles',
         'seniority_level',
-        'skills',
-        'past_companies',
+        'decision_making_power',
+        'company_function',
         'company_name',
         'company_size',
-        'company_phone_numbers',
         'company_location_text',
         'company_type',
         'company_industry',
         'company_sector',
-        'company_facebook_page',
+        'company_funding_range',
         'revenue_range',
         'ebitda_range',
-        'company_linkedin_page',
-        'company_sic_code',
-        'company_naics_code',
+        'latest_funding_stage',
         'company_size_key',
         'linkedin_url',
         'company_founded_at',
-        'company_website',
-        'company_products_services'
+        'company_website'
     ]
 };
 

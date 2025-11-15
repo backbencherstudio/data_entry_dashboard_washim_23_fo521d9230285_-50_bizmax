@@ -1,13 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { X, Download, Database, AlertCircle, CheckCircle2 } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useTotalData } from '@/hooks/TotalDataContext';
+import { UserService } from '@/userservice/user.service';
+import { saveAs } from 'file-saver';
 
 interface ExportDataPopupProps {
     isOpen: boolean;
@@ -18,6 +14,38 @@ interface ExportDataPopupProps {
     exportType?: 'csv' | 'json' | 'excel';
 }
 
+const convertToCSV = (data: sellsHeaders[]): string => {
+    if (!data.length) return '';
+
+    // Define headers
+    const headers = Object.keys(data[0]);
+
+    // Create CSV content
+    const csvRows = [];
+
+    // Add headers
+    csvRows.push(headers.join(','));
+
+    // Add data rows
+    for (const row of data) {
+        const values = headers.map(header => {
+            const value = row[header as keyof sellsHeaders];
+            // Handle values that might contain commas or quotes
+            const escapedValue = String(value ?? '').replace(/"/g, '""');
+            return `"${escapedValue}"`;
+        });
+        csvRows.push(values.join(','));
+    }
+
+    return csvRows.join('\n');
+};
+
+// Function to download CSV
+const downloadCSV = (csvContent: string, filename: string): void => {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, filename);
+};
+
 export default function ExportDataPopup({
     isOpen,
     onClose,
@@ -26,11 +54,12 @@ export default function ExportDataPopup({
     availableRecords = 5000,
     exportType = 'csv'
 }: ExportDataPopupProps) {
-    const {totalData} = useTotalData();
-    const [exportSize, setExportSize] = useState<number>(totalData);
+    const pathname = usePathname();
+    const { totalData, salesFilters, zoominfoFilters, apolloFilters } = useTotalData();
+    const [exportSize, setExportSize] = useState<number>(0);
     const [selectedOption, setSelectedOption] = useState<'custom' | 'all'>('custom');
     const [isExporting, setIsExporting] = useState(false);
-
+    const [activePage, setActivePage] = useState('');
 
     const handleSizeChange = (value: number) => {
         const safeMax = Math.min(maxRecords, availableRecords);
@@ -45,11 +74,37 @@ export default function ExportDataPopup({
         }
     };
 
+    const getExportData = async (page: number, limit: number, filterType: string, filters: salesFilterState | apolloFilterState | zoominfoFilterState) => {
+        try {
+            const res = await UserService?.getExportData(page, limit, filterType, filters);
+            if (res?.data?.success && res?.data?.data.length > 0) {
+                console.log("Exporting.... ")
+                // Convert data to CSV
+                const csvContent = convertToCSV(res?.data?.data);
+
+                // Create and download the file
+                downloadCSV(csvContent, `exported-${Number(new Date())}.csv`);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     const handleExport = async () => {
         setIsExporting(true);
         try {
-            await onExport(selectedOption === 'all' ? Math.min(maxRecords, availableRecords) : exportSize);
-            // Success state handled by parent
+            if (activePage === 'sells') {
+                console.log("Sales data : ", salesFilters);
+                getExportData(1, selectedOption === 'all' ? Math.min(maxRecords, availableRecords) : exportSize, 'sells', salesFilters);
+            }
+            if (activePage === 'zoominfo') {
+                console.log("Zoominfo data : ", zoominfoFilters)
+                getExportData(1, Math.min(selectedOption === 'all' ? Math.min(maxRecords, availableRecords) : exportSize, totalData), 'zoominfo', zoominfoFilters)
+            }
+            if (activePage === 'dashboard') {
+                console.log("Apollo data : ", apolloFilters);
+                getExportData(1, Math.min(selectedOption === 'all' ? Math.min(maxRecords, availableRecords) : exportSize, totalData), 'apollo', apolloFilters);
+            }
         } catch (error) {
             console.error('Export failed:', error);
         } finally {
@@ -63,6 +118,11 @@ export default function ExportDataPopup({
         setIsExporting(false);
         onClose();
     };
+
+    useEffect(() => {
+        const paths = pathname?.split('/')
+        setActivePage(pathname?.split('/')?.[paths?.length - 1]);
+    }, [isOpen])
 
     const getFileTypeInfo = () => {
         switch (exportType) {
@@ -125,12 +185,12 @@ export default function ExportDataPopup({
                                 <div className="flex-1">
                                     <p className="font-medium text-gray-900">All Available Data</p>
                                     <p className="text-sm text-gray-600 mt-1">
-                                        Export all {totalData.toLocaleString()} records
+                                        Export all {availableRecords.toLocaleString()} records
                                     </p>
-                                    {totalData > maxRecords && (
+                                    {availableRecords > maxRecords && (
                                         <div className="flex items-center gap-2 mt-2 text-amber-600 text-sm">
                                             <AlertCircle className="w-4 h-4" />
-                                            Limited to {totalData.toLocaleString()} records maximum
+                                            Limited to {maxRecords.toLocaleString()} records maximum
                                         </div>
                                     )}
                                 </div>
@@ -151,26 +211,7 @@ export default function ExportDataPopup({
                                     <p className="text-sm text-gray-600 mt-1">Select specific number of records</p>
 
                                     {selectedOption === 'custom' && (
-                                        <div className="mt-4 space-y-4">
-                                            {/* Predefined Sizes */}
-                                            {/* <div className="flex flex-wrap gap-2">
-                                                {predefinedSizes.map((size) => (
-                                                    <button
-                                                        key={size}
-                                                        type="button"
-                                                        onClick={() => handleSizeChange(size)}
-                                                        className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${exportSize === size
-                                                            ? 'bg-blue-600 text-white'
-                                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                                            }`}
-                                                        disabled={isExporting || size > actualMaxRecords}
-                                                    >
-                                                        {size.toLocaleString()}
-                                                    </button>
-                                                ))}
-                                            </div> */}
-
-                                            {/* Custom Input */}
+                                        <div className="mt-4 space-y-4">{/* Custom Input */}
                                             <div className="space-y-2">
                                                 <label className="text-sm font-medium text-gray-700">
                                                     Custom number of records
@@ -179,14 +220,14 @@ export default function ExportDataPopup({
                                                     <input
                                                         type="number"
                                                         min="1"
-                                                        max={totalData.toString()}
+                                                        max={actualMaxRecords}
                                                         value={exportSize}
                                                         onChange={(e) => handleSizeChange(parseInt(e.target.value) || 1)}
                                                         className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                                         disabled={isExporting}
                                                     />
                                                     <span className="text-sm text-gray-500 whitespace-nowrap">
-                                                        / {totalData.toLocaleString()}
+                                                        / {actualMaxRecords.toLocaleString()}
                                                     </span>
                                                 </div>
                                             </div>
@@ -247,3 +288,56 @@ export default function ExportDataPopup({
         </div>
     );
 }
+
+type salesFilterState = {
+    email: string[];
+    job_title: string[];
+    company_domain: string[];
+    urls: string[];
+    city: string[];
+    email_first: string[];
+    email_second: string[];
+};
+
+type zoominfoFilterState = {
+    email: string[];
+    lead_titles: string[];
+    company_website: string[];
+    company_industry: string[];
+    company_size: string[];
+    revenue_range: string[];
+    company_location_text: string[];
+    keyword: string[];
+};
+type apolloFilterState = {
+    email: string[];
+    job_titles: string[];
+    industry: string[];
+    keyword: string[];
+    technologies: string[];
+    website: string[];
+    company_domain: string[];
+    company_linkedin: string[];
+    country: string[];
+    city: string[];
+    state: string[];
+    annual_revenue: string[];
+};
+
+type sellsHeaders = {
+    first_name: string;
+    last_name: string;
+    job_title: string;
+    email_first: string;
+    email_second: string;
+    phone: string;
+    company_phone: string;
+    url: string;
+    company_name: string;
+    company_id: string;
+    company_domain: string;
+    location: string;
+    linkedin_id: string;
+    created_at: string;
+}
+

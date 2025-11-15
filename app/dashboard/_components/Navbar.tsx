@@ -15,11 +15,13 @@ import { IoCopyOutline } from "react-icons/io5";
 import LogoutConfirmationPopup from "@/app/_components/LogoutConfirmationPopup";
 import toast,{Toaster, useToaster} from "react-hot-toast";
 import { CookieHelper } from "@/helper/cookie.helper";
+import { useTotalData } from "@/hooks/TotalDataContext";
 
 export default function Navbar() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const pathname = usePathname();
+    const {totalData} = useTotalData();
     const handleFileUpload = (file: File) => {
         console.log('File uploaded:', file);
         // Handle the file upload logic here
@@ -149,8 +151,8 @@ export default function Navbar() {
                     setExportStatus('idle');
                 }}
                 onExport={handleExport}
-                maxRecords={100000}
-                availableRecords={50000}
+                maxRecords={totalData}
+                availableRecords={totalData}
                 exportType="csv"
             />
         </div>

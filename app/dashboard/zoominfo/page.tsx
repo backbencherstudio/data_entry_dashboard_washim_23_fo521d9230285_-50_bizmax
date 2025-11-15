@@ -68,7 +68,7 @@ type paginationType = {
 
 export default function sells() {
     const [data, setData] = useState<dataType[]>([])
-    const { totalData, updateTotalData, resetTotalData } = useTotalData();
+    const { totalData, updateTotalData, resetTotalData,updateFilters } = useTotalData();
     const [pagination, setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
@@ -121,6 +121,7 @@ export default function sells() {
         initialFilters.company_location_text = parseParam(searchParams.get('location'),"|");
         setCurrentPage(1)
         setFilters(initialFilters);
+        updateFilters('zoominfo',initialFilters)
     }, [searchParams]);
 
 

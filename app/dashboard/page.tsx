@@ -114,7 +114,7 @@ const INITIAL_FILTER_STATE: FilterState = {
 
 export default function sells() {
     const [data,setData] = useState<dataType[]>([]);
-    const { totalData, updateTotalData, resetTotalData } = useTotalData();
+    const { totalData, updateTotalData, resetTotalData,updateFilters } = useTotalData();
     const [pagination,setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
@@ -173,6 +173,7 @@ export default function sells() {
         initialFilters.annual_revenue = parseParam(searchParams.get('annual_revenue'));
         setCurrentPage(1)
         setFilters(initialFilters);
+        updateFilters('apollo',initialFilters)
       }, [searchParams]);
 
 

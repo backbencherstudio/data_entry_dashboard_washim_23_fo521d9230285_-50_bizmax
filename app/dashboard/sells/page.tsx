@@ -56,7 +56,7 @@ const INITIAL_FILTER_STATE: FilterState = {
 export default function sells() {
     const [data, setData] = useState<dataType[]>([]);
     const search = useSearchParams();
-    const { totalData, updateTotalData, resetTotalData } = useTotalData();
+    const { totalData, updateTotalData, resetTotalData,updateFilters } = useTotalData();
     const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
     const [pagination, setPagination] = useState<paginationType>({
         total: 1,
@@ -108,7 +108,7 @@ export default function sells() {
         initialFilters.email_second = parseParam(search.get('email_second'));
         setCurrentPage(1)
         setFilters(initialFilters);
-
+        updateFilters('sales',initialFilters);
     }, [search]);
 
 
