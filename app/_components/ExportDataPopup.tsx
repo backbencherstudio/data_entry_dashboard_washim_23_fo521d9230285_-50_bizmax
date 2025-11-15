@@ -6,7 +6,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+import { useTotalData } from '@/hooks/TotalDataContext';
 
 interface ExportDataPopupProps {
     isOpen: boolean;
@@ -25,11 +26,11 @@ export default function ExportDataPopup({
     availableRecords = 5000,
     exportType = 'csv'
 }: ExportDataPopupProps) {
-    const [exportSize, setExportSize] = useState<number>(100);
+    const {totalData} = useTotalData();
+    const [exportSize, setExportSize] = useState<number>(totalData);
     const [selectedOption, setSelectedOption] = useState<'custom' | 'all'>('custom');
     const [isExporting, setIsExporting] = useState(false);
 
-    const predefinedSizes = [100, 500, 1000, 5000];
 
     const handleSizeChange = (value: number) => {
         const safeMax = Math.min(maxRecords, availableRecords);
@@ -124,12 +125,12 @@ export default function ExportDataPopup({
                                 <div className="flex-1">
                                     <p className="font-medium text-gray-900">All Available Data</p>
                                     <p className="text-sm text-gray-600 mt-1">
-                                        Export all {availableRecords.toLocaleString()} records
+                                        Export all {totalData.toLocaleString()} records
                                     </p>
-                                    {availableRecords > maxRecords && (
+                                    {totalData > maxRecords && (
                                         <div className="flex items-center gap-2 mt-2 text-amber-600 text-sm">
                                             <AlertCircle className="w-4 h-4" />
-                                            Limited to {maxRecords.toLocaleString()} records maximum
+                                            Limited to {totalData.toLocaleString()} records maximum
                                         </div>
                                     )}
                                 </div>
@@ -152,7 +153,7 @@ export default function ExportDataPopup({
                                     {selectedOption === 'custom' && (
                                         <div className="mt-4 space-y-4">
                                             {/* Predefined Sizes */}
-                                            <div className="flex flex-wrap gap-2">
+                                            {/* <div className="flex flex-wrap gap-2">
                                                 {predefinedSizes.map((size) => (
                                                     <button
                                                         key={size}
@@ -167,7 +168,7 @@ export default function ExportDataPopup({
                                                         {size.toLocaleString()}
                                                     </button>
                                                 ))}
-                                            </div>
+                                            </div> */}
 
                                             {/* Custom Input */}
                                             <div className="space-y-2">
@@ -178,14 +179,14 @@ export default function ExportDataPopup({
                                                     <input
                                                         type="number"
                                                         min="1"
-                                                        max={actualMaxRecords}
+                                                        max={totalData.toString()}
                                                         value={exportSize}
                                                         onChange={(e) => handleSizeChange(parseInt(e.target.value) || 1)}
                                                         className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                                         disabled={isExporting}
                                                     />
                                                     <span className="text-sm text-gray-500 whitespace-nowrap">
-                                                        / {actualMaxRecords.toLocaleString()}
+                                                        / {totalData.toLocaleString()}
                                                     </span>
                                                 </div>
                                             </div>

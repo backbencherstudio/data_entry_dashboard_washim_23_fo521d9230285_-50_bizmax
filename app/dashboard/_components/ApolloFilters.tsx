@@ -140,9 +140,9 @@ export default function ApolloFilters() {
           if (searchItem?.key === "technologies" || search === "technologies") {
             setTechnology(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.technologies })));
           }
-          if (searchItem?.key === "technologies" || search === "technologies") {
-            setWebsite(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.technologies })));
-          }
+          // if (searchItem?.key === "technologies" || search === "technologies") {
+          //   setWebsite(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.technologies })));
+          // }
           if (searchItem?.key === "websites" || search === "websites") {
             setWebsite(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.website })));
           }
@@ -315,18 +315,18 @@ export default function ApolloFilters() {
         onUpDate: (data: string[]) => updateFilter('website', data)
       }
     },
-    {
-      type: 'regular',
-      key: 'company_domain',
-      props: {
-        data: companyDomain,
-        title: "Domain",
-        subTitle: "Domains",
-        Icon: <GrDomain />,
-        selectedData: filters.company_domain,
-        onUpDate: (data: string[]) => updateFilter('company_domain', data)
-      }
-    },
+    // {
+    //   type: 'regular',
+    //   key: 'company_domain',
+    //   props: {
+    //     data: companyDomain,
+    //     title: "Domain",
+    //     subTitle: "Domains",
+    //     Icon: <GrDomain />,
+    //     selectedData: filters.company_domain,
+    //     onUpDate: (data: string[]) => updateFilter('company_domain', data)
+    //   }
+    // },
     {
       type: 'regular',
       key: 'companyLinkedin',
