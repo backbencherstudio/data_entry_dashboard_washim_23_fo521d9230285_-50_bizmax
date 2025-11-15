@@ -2,26 +2,52 @@
 
 import FileUploadPopup from "@/app/_components/FileUploadPopup";
 import ExportDataPopup from "@/app/_components/ExportDataPopup";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa6";
 import { AiOutlineDoubleRight } from "react-icons/ai";
 import { usePathname } from "next/navigation";
-
 import { IoSearch } from "react-icons/io5";
 import { AlertCircle, CheckCircle2, Download } from "lucide-react";
 import Link from "next/link";
 import { IoCopyOutline } from "react-icons/io5";
 import LogoutConfirmationPopup from "@/app/_components/LogoutConfirmationPopup";
-import toast,{Toaster, useToaster} from "react-hot-toast";
+import toast, { Toaster, useToaster } from "react-hot-toast";
 import { CookieHelper } from "@/helper/cookie.helper";
 import { useTotalData } from "@/hooks/TotalDataContext";
+
+// Custom debounce hook
+function useDebounce(callback: (value: string) => void, delay: number) {
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const debouncedCallback = useCallback((value: string) => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            callback(value);
+        }, delay);
+    }, [callback, delay]);
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
+
+    return debouncedCallback;
+}
 
 export default function Navbar() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const pathname = usePathname();
-    const {totalData} = useTotalData();
+    const { totalData, searchText, updateSearch } = useTotalData();
+
     const handleFileUpload = (file: File) => {
         console.log('File uploaded:', file);
         // Handle the file upload logic here
@@ -36,9 +62,16 @@ export default function Navbar() {
         };
         reader.readAsText(file);
     };
+
     const [currentPage, setCurrentPage] = useState<string>('');
     const [isExportPopupOpen, setIsExportPopupOpen] = useState(false);
     const [exportStatus, setExportStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [search, setSearch] = useState<string>('');
+
+    // Use the custom debounce hook
+    const debouncedSearch = useDebounce((search: string) => {
+        updateSearch(search);
+    }, 1000);
 
     const handleExport = async (exportSize: number) => {
         try {
@@ -46,7 +79,6 @@ export default function Navbar() {
 
             // Simulate API call for export
             await new Promise(resolve => setTimeout(resolve, 2000));
-
 
             setExportStatus('success');
 
@@ -64,7 +96,7 @@ export default function Navbar() {
 
     useEffect(() => {
         const userToken = CookieHelper.get({ key: "access_token" });
-        if(userToken){
+        if (userToken) {
             setIsLogin(true);
         }
     }, [])
@@ -74,6 +106,11 @@ export default function Navbar() {
         setCurrentPage(segments?.[segments?.length - 1] || '');
         console.log("Path : ", segments)
     }, [pathname]);
+
+    const handleSearch = (searchValue: string) => {
+        setSearch(searchValue);
+        debouncedSearch(searchValue);
+    }
 
     const handleCopyUrlClick = () => {
         const currentUrl = window.location.href;
@@ -99,17 +136,19 @@ export default function Navbar() {
 
     return (
         <div className="border-b border-gray-200 px-4 flex items-center justify-between">
-            <Toaster position="top-right"/>
-            {/* <div className="flex items-center gap-2 border border-gray-300 w-fit px-2 py-1 text-sm rounded-md">
+            <Toaster position="top-right" />
+            <div className="flex items-center gap-2 border border-gray-300 w-fit px-2 py-1 text-sm rounded-md">
                 <button type="button" className="cursor-pointer">
                     <IoSearch className="text-gray-500" />
                 </button>
                 <input
                     type="text"
                     className="outline-none"
+                    value={search}
+                    onChange={(e) => handleSearch(e.target.value)}
                     placeholder="Search people"
                 />
-            </div> */}
+            </div>
             <div className="flex items-center text-gray-800 font-medium text-center text-nowrap">
                 <Link href="/dashboard" className={`flex justify-center rounded-t-lg py-3 ${currentPage.includes("dashboard") ? "bg-gray-200" : "hover:bg-gray-100"} w-[130px] duration-300`}>Apollo</Link>
                 <Link href="/dashboard/zoominfo" className={`flex justify-center rounded-t-lg py-3 ${currentPage.includes("zoominfo") ? "bg-gray-200" : "hover:bg-gray-100"} w-[130px] duration-300`}>Zoominfo</Link>

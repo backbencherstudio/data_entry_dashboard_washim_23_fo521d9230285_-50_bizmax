@@ -5,6 +5,7 @@ import { UserService } from "@/userservice/user.service";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTotalData } from "@/hooks/TotalDataContext";
+import Loader from "@/app/_components/Loader";
 
 type FilterState = {
     email: string[];
@@ -68,7 +69,7 @@ type paginationType = {
 
 export default function sells() {
     const [data, setData] = useState<dataType[]>([])
-    const { totalData, updateTotalData, resetTotalData,updateFilters } = useTotalData();
+    const { totalData, updateTotalData, resetTotalData, updateFilters } = useTotalData();
     const [pagination, setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
@@ -77,7 +78,7 @@ export default function sells() {
     })
     const [currentPage, setCurrentPage] = useState(1);
     const searchParams = useSearchParams();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
     const getSalesData = async ({ page = 1, limit = 20 }: { page?: number, limit?: number }) => {
         setLoading(true);
@@ -102,13 +103,13 @@ export default function sells() {
 
     useEffect(() => {
         getSalesData({ page: currentPage });
-    }, [currentPage,filters])
+    }, [currentPage, filters])
 
     useEffect(() => {
         const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
 
         // Helper function to parse comma-separated params
-        const parseParam = (param: string | null,separator?:string): string[] =>
+        const parseParam = (param: string | null, separator?: string): string[] =>
             param ? param.split(separator || ',').filter(Boolean) : [];
 
         initialFilters.email = parseParam(searchParams.get('email'));
@@ -116,14 +117,17 @@ export default function sells() {
         initialFilters.company_website = parseParam(searchParams.get('company_website'));
         initialFilters.company_industry = parseParam(searchParams.get('industry'));
         initialFilters.keyword = parseParam(searchParams.get('keywords'));
-        initialFilters.company_size = parseParam(searchParams.get('employee_size'),'|');
+        initialFilters.company_size = parseParam(searchParams.get('employee_size'), '|');
         initialFilters.revenue_range = parseParam(searchParams.get('company_revenue'));
-        initialFilters.company_location_text = parseParam(searchParams.get('location'),"|");
+        initialFilters.company_location_text = parseParam(searchParams.get('location'), "|");
         setCurrentPage(1)
         setFilters(initialFilters);
-        updateFilters('zoominfo',initialFilters)
+        updateFilters('zoominfo', initialFilters)
     }, [searchParams]);
 
+    if (loading) {
+        return <Loader />
+    }
 
     return (
         <div className="w-full bg-gray-100 overflow-hidden" style={{ height: 'calc(100vh - 56px)' }}>

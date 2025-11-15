@@ -48,6 +48,8 @@ interface TotalDataContextType {
   updateTotalData: (newData: number) => void;
   resetTotalData: () => void;
   updateFilters: (fl: string, data: any) => void;
+  searchText: string;
+  updateSearch: (search:string)=> void;
 }
 
 // Default values
@@ -58,6 +60,7 @@ const TotalDataContext = createContext<TotalDataContextType | undefined>(undefin
 // Provider component
 export function TotalDataProvider({ children }: { children: ReactNode }) {
   const [totalData, setTotalData] = useState<number>(defaultTotalData);
+  const [searchText,setSearchText] = useState<string>('')
   const [salesFilters, setSalesFilters] = useState<salesFilterType>({
     email: [],
     job_title: [],
@@ -112,8 +115,12 @@ export function TotalDataProvider({ children }: { children: ReactNode }) {
     setTotalData(defaultTotalData);
   };
 
+  const updateSearch= (search:string)=>{
+    setSearchText(search);
+  }
+
   return (
-    <TotalDataContext.Provider value={{ totalData, updateTotalData, resetTotalData, updateFilters, salesFilters,zoominfoFilters,apolloFilters }}>
+    <TotalDataContext.Provider value={{ totalData, updateTotalData, resetTotalData, updateFilters, salesFilters,zoominfoFilters,apolloFilters,searchText,updateSearch }}>
       {children}
     </TotalDataContext.Provider>
   );

@@ -5,6 +5,7 @@ import { UserService } from "@/userservice/user.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTotalData } from "@/hooks/TotalDataContext";
+import Loader from "@/app/_components/Loader";
 
 
 type dataType = {
@@ -56,7 +57,7 @@ const INITIAL_FILTER_STATE: FilterState = {
 export default function sells() {
     const [data, setData] = useState<dataType[]>([]);
     const search = useSearchParams();
-    const { totalData, updateTotalData, resetTotalData,updateFilters } = useTotalData();
+    const { totalData, updateTotalData, resetTotalData, updateFilters,searchText } = useTotalData();
     const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
     const [pagination, setPagination] = useState<paginationType>({
         total: 1,
@@ -65,14 +66,15 @@ export default function sells() {
         limit: 20
     })
     const [currentPage, setCurrentPage] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const getSalesData = async ({ page = 1, limit = 20 }: { page?: number, limit?: number }) => {
+    const [loading, setLoading] = useState(true);
+    const getSalesData = async ({ page = 1, limit = 20,search }: { page?: number, limit?: number,search?:string }) => {
         setLoading(true);
         try {
             const res = await UserService?.getFilteredSalesData({
                 page: page,
                 limit: limit,
-                filters
+                filters,
+                search
             });
             console.log(res)
             if (res?.data?.success) {
@@ -88,29 +90,32 @@ export default function sells() {
     }
 
     useEffect(() => {
-        getSalesData({ page: currentPage });
-    }, [currentPage, filters])
+        getSalesData({ page: currentPage,search:searchText });
+    }, [currentPage, filters,searchText])
 
 
     useEffect(() => {
         const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
 
         // Helper function to parse comma-separated params
-        const parseParam = (param: string | null,separator?:string): string[] =>
-            param ? param.split(separator||',').filter(Boolean) : [];
+        const parseParam = (param: string | null, separator?: string): string[] =>
+            param ? param.split(separator || ',').filter(Boolean) : [];
 
         initialFilters.email = parseParam(search.get('email'));
         initialFilters.job_title = parseParam(search.get('jobTitles'));
         initialFilters.company_domain = parseParam(search.get('domains'));
         initialFilters.urls = parseParam(search.get('personalLinkedinUrl'));
-        initialFilters.city = parseParam(search.get('location'),'|');
+        initialFilters.city = parseParam(search.get('location'), '|');
         initialFilters.email_first = parseParam(search.get('email_first'));
         initialFilters.email_second = parseParam(search.get('email_second'));
         setCurrentPage(1)
         setFilters(initialFilters);
-        updateFilters('sales',initialFilters);
+        updateFilters('sales', initialFilters);
     }, [search]);
 
+    if (loading) {
+        return <Loader />
+    }
 
     return (
         <div className="w-full bg-gray-100 overflow-hidden" style={{ height: 'calc(100vh - 56px)' }}>

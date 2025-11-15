@@ -6,6 +6,7 @@ import ApolloDataTable from "../_components/ApolloDataTable"
 import { UserService } from "@/userservice/user.service";
 import { useSearchParams } from "next/navigation";
 import { useTotalData } from "@/hooks/TotalDataContext";
+import Loader from "../_components/Loader";
 
 
 type dataType= {
@@ -112,9 +113,9 @@ const INITIAL_FILTER_STATE: FilterState = {
 };
 
 
-export default function sells() {
+export default function page() {
     const [data,setData] = useState<dataType[]>([]);
-    const { totalData, updateTotalData, resetTotalData,updateFilters } = useTotalData();
+    const { searchText,totalData, updateTotalData, resetTotalData,updateFilters } = useTotalData();
     const [pagination,setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
@@ -122,34 +123,34 @@ export default function sells() {
         limit: 20
     })
     const [currentPage,setCurrentPage] = useState(1);
-    const [loading,setLoading] = useState(false);
+    const [loading,setLoading] = useState(true);
     const searchParams = useSearchParams();
     const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
-    const getSalesData= async({page=1,limit=20}:{page?:number,limit?:number})=>{
+    const getSalesData= async({page=1,limit=20,search}:{page?:number,limit?:number,search?:string})=>{
         setLoading(true);
         try{
             const res = await UserService?.getFilteredApolloData({
                 page: page,
                 limit: limit,
-                filters
+                filters,
+                search
             });
-            console.log(res)
             if(res?.data?.success){
                 setData(res?.data?.data);
                 setPagination(res?.data?.meta);
                 updateTotalData(res?.data?.meta?.total)
+                setLoading(false);
             }
         }catch(err){
             console.log(err);
             updateTotalData(0)
-        }finally{
             setLoading(false);
         }
     }
 
     useEffect(()=>{
-        getSalesData({page:currentPage});
-    },[currentPage,filters])
+        getSalesData({page:currentPage,search:searchText});
+    },[currentPage,filters,searchText])
 
 
     useEffect(() => {
@@ -176,6 +177,9 @@ export default function sells() {
         updateFilters('apollo',initialFilters)
       }, [searchParams]);
 
+      if(loading){
+        return<Loader />
+      }
 
     return(
         <div className="w-full bg-gray-100 overflow-hidden" style={{height: 'calc(100vh - 56px)'}}>
