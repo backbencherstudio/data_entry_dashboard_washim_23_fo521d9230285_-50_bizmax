@@ -224,13 +224,46 @@ export const UserService = {
     },
 
 
-    importCSVdata:async (data:any) => {
+    importCSVdata: async (data: any) => {
         const userToken = CookieHelper.get({ key: "access_token" });
         const config = {
             headers: {
                 Authorization: `Bearer ${userToken}`,
             },
         };
-        return await Fetch.post('/leads/import',data, config);
+        return await Fetch.post('/leads/import', data, config);
     },
+
+    getExportData: async (page:number,limit:number,filterType:string,filters:apolloFilterState | salesFilterState | zoominfoFilterState) => {
+        const userToken = CookieHelper.get({ key: "access_token" });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+            },
+        };
+
+        let filter = "";
+        Object.entries(filters).forEach(item => {
+            item[1]?.forEach(entry => {
+                if (entry) {
+                    filter += `${item[0]}=${entry?.trim()}&`;
+                }
+            })
+        });
+        if (filter.endsWith('&')) {
+            filter = filter.slice(0, -1);
+        }
+        console.log("Exporting....")
+
+        if(filterType === "sells"){
+            return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&${filter}`, config);
+        }
+        if(filterType === "zoominfo"){
+            return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&${filter}`, config);
+        }
+        if(filterType === "apollo"){
+            return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&${filter}`, config);
+        }
+    }
 }
