@@ -143,6 +143,7 @@ const fileHeaders: Record<FileType, string[]> = {
 
 const UploadPage: React.FC = () => {
     const [isValid, setIsValid] = useState(false);
+    const [loading,setLoading] = useState(false);
     const [selectedType, setSelectedType] = useState<FileType>('APOLLO');
     const [validationData, setValidationData] = useState<CSVValidationResult | null>(null);
     const [uploading,setUploading] = useState(false);
@@ -175,7 +176,6 @@ const UploadPage: React.FC = () => {
                 fd.append("type", selectedType);
 
                 const res = await UserService.importCSVdata(fd);
-                console.log('Upload successful:', res);
                 if(res?.data?.success){
                     toast?.success("Data uploaded successfully.");
                     setIsImported(true);

@@ -974,7 +974,7 @@ export default function ApolloDataTable({data,pagination,onPageChange}:propType)
                 <DynamicTable data={data} columns={columns} />
             </div>
             <div className="w-full">
-                <PaginationPage totalItems={pagination?.total} itemsPerPage={pagination?.limit} onPageChange={(page) => { onPageChange(page) }} isLogin={isLogin}/>
+                <PaginationPage totalItems={isLogin?pagination?.total:20} itemsPerPage={pagination?.limit} onPageChange={(page) => { onPageChange(page) }} isLogin={isLogin}/>
             </div>
         </div>
     )
