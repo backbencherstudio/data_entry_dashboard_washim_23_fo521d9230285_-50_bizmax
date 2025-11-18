@@ -1,6 +1,8 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { UserService } from '@/userservice/user.service';
+import { useRouter } from 'next/navigation';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 // Define the shape of your total data (modify this according to your needs)
 
@@ -49,7 +51,8 @@ interface TotalDataContextType {
   resetTotalData: () => void;
   updateFilters: (fl: string, data: any) => void;
   searchText: string;
-  updateSearch: (search:string)=> void;
+  updateSearch: (search: string) => void;
+  isLogin: boolean;
 }
 
 // Default values
@@ -60,7 +63,9 @@ const TotalDataContext = createContext<TotalDataContextType | undefined>(undefin
 // Provider component
 export function TotalDataProvider({ children }: { children: ReactNode }) {
   const [totalData, setTotalData] = useState<number>(defaultTotalData);
-  const [searchText,setSearchText] = useState<string>('')
+  const [searchText, setSearchText] = useState<string>('')
+  const [isLogin, setIsLogin] = useState(false);
+  const router = useRouter();
   const [salesFilters, setSalesFilters] = useState<salesFilterType>({
     email: [],
     job_title: [],
@@ -115,12 +120,31 @@ export function TotalDataProvider({ children }: { children: ReactNode }) {
     setTotalData(defaultTotalData);
   };
 
-  const updateSearch= (search:string)=>{
+  const updateSearch = (search: string) => {
     setSearchText(search);
   }
 
+  const getMe = async () => {
+    try {
+      const res = await UserService?.me();
+      if(res?.data?.success){
+        setIsLogin(true);
+      }else{
+        setIsLogin(false);
+        router?.replace('/login')
+      }
+    } catch (err) {
+      console.log(err);
+      router?.replace('/login')
+    }
+  }
+
+  useEffect(() => {
+    getMe();
+  }, [])
+
   return (
-    <TotalDataContext.Provider value={{ totalData, updateTotalData, resetTotalData, updateFilters, salesFilters,zoominfoFilters,apolloFilters,searchText,updateSearch }}>
+    <TotalDataContext.Provider value={{ totalData, updateTotalData, resetTotalData, updateFilters, salesFilters, zoominfoFilters, apolloFilters, searchText, updateSearch, isLogin }}>
       {children}
     </TotalDataContext.Provider>
   );

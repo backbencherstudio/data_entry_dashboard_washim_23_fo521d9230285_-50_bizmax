@@ -46,6 +46,13 @@ type dataType = {
     ebitda_range: string;
     last_funding_stage: string;
     company_size_key: string;
+    skills: string;
+    past_companies: string;
+    company_facebook_page: string;
+    company_twitter_page: string;
+    company_linkedin_page: string;
+    company_sic_code: string;
+    company_naics_code: string;
 };
 
 const INITIAL_FILTER_STATE: FilterState = {
@@ -69,7 +76,7 @@ type paginationType = {
 
 export default function sells() {
     const [data, setData] = useState<dataType[]>([])
-    const { totalData, updateTotalData, resetTotalData, updateFilters } = useTotalData();
+    const { searchText,totalData, updateTotalData, resetTotalData, updateFilters } = useTotalData();
     const [pagination, setPagination] = useState<paginationType>({
         total: 1,
         page: 1,
@@ -80,13 +87,14 @@ export default function sells() {
     const searchParams = useSearchParams();
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
-    const getSalesData = async ({ page = 1, limit = 20 }: { page?: number, limit?: number }) => {
+    const getSalesData = async ({ page = 1, limit = 20,search }: { page?: number, limit?: number,search?:string }) => {
         setLoading(true);
         try {
             const res = await UserService?.getFilteredZoominfoData({
                 page: page,
                 limit: limit,
-                filters
+                filters,
+                search
             });
             console.log(res)
             if (res?.data?.success) {
@@ -102,8 +110,8 @@ export default function sells() {
     }
 
     useEffect(() => {
-        getSalesData({ page: currentPage });
-    }, [currentPage, filters])
+        getSalesData({ page: currentPage,search:searchText });
+    }, [currentPage, filters,searchText])
 
     useEffect(() => {
         const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };

@@ -33,7 +33,13 @@ type dataType = {
     ebitda_range: string;
     last_funding_stage: string;
     company_size_key: string;
-};
+    skills: string;
+    past_companies: string;
+    company_facebook_page: string;
+    company_twitter_page: string;
+    company_linkedin_page: string;
+    company_sic_code: string;
+    company_naics_code: string;};
 
 type paginationType = {
     total: number;
@@ -426,7 +432,112 @@ export default function ZoominfoDataTable({ data, pagination, onPageChange }: pr
                     </span>}
                 </div>
             )
-        }
+        },
+        {
+            label: "Skills",
+            accessor: "skills",
+            width: "160px",
+            formatter: (accessor: string, row: any) => (
+                <div className='flex items-center gap-2 p-4'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor?.split(',')?.[0]}
+                    </span>
+                    {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
+                        +{accessor?.split(',')?.length}
+                    </span>}
+                </div>
+            )
+        },
+        {
+            label: "Past Companies",
+            accessor: "past_companies",
+            width: "160px",
+            formatter: (accessor: string, row: any) => (
+                <div className='flex items-center gap-2 p-4'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor?.split(',')?.[0]}
+                    </span>
+                    {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
+                        +{accessor?.split(',')?.length}
+                    </span>}
+                </div>
+            )
+        },
+        {
+            label: "Company Facebook Page",
+            accessor: "company_facebook_page",
+            width: "160px",
+            formatter: (accessor: string, row: any) => (
+                <div className='flex items-center gap-2 p-4'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor?.split(',')?.[0]}
+                    </span>
+                    {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
+                        +{accessor?.split(',')?.length}
+                    </span>}
+                </div>
+            )
+        },
+        {
+            label: "Company Twitter Page",
+            accessor: "company_twitter_page",
+            width: "160px",
+            formatter: (accessor: string, row: any) => (
+                <div className='flex items-center gap-2 p-4'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor?.split(',')?.[0]}
+                    </span>
+                    {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
+                        +{accessor?.split(',')?.length}
+                    </span>}
+                </div>
+            )
+        },
+        {
+            label: "Company Linkedin Page",
+            accessor: "company_linkedin_page",
+            width: "160px",
+            formatter: (accessor: string, row: any) => (
+                <div className='flex items-center gap-2 p-4'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor?.split(',')?.[0]}
+                    </span>
+                    {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
+                        +{accessor?.split(',')?.length}
+                    </span>}
+                </div>
+            )
+        },
+        {
+            label: "Company Sic Code",
+            accessor: "company_sic_code",
+            width: "160px",
+            formatter: (accessor: string, row: any) => (
+                <div className='flex items-center gap-2 p-4'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor?.split(',')?.[0]}
+                    </span>
+                    {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
+                        +{accessor?.split(',')?.length}
+                    </span>}
+                </div>
+            )
+        },
+        {
+            label: "company Naics Code",
+            accessor: "company_naics_code",
+            width: "160px",
+            formatter: (accessor: string, row: any) => (
+                <div className='flex items-center gap-2 p-4'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                        {accessor?.split(',')?.[0]}
+                    </span>
+                    {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
+                        +{accessor?.split(',')?.length}
+                    </span>}
+                </div>
+            )
+        },
     ]
 
     if (loading) {
