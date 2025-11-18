@@ -123,6 +123,9 @@ const fileHeaders: Record<FileType, string[]> = {
         'lead_titles',
         'seniority_level',
         'decision_making_power',
+        'skills',
+        'past_companies',
+        'company_phone_numbers',
         'company_function',
         'company_name',
         'company_size',
@@ -136,6 +139,11 @@ const fileHeaders: Record<FileType, string[]> = {
         'latest_funding_stage',
         'company_size_key',
         'linkedin_url',
+        'company_facebook_page',
+        'company_twitter_page',
+        'company_linkedin_page',
+        'company_sic_code',
+        'company_naics_code',
         'company_founded_at',
         'company_website'
     ]

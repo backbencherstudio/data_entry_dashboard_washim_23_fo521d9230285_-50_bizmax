@@ -45,25 +45,25 @@ type apolloFilterState = {
 export const UserService = {
     login: async ({ email, password }: { email: string, password: string }, context = null) => {
         // const userToken = CookieHelper.get({ key: "token", context });
-
+        
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
-
+        
         return await Fetch.post(`/auth/login`, { email: email, password: password }, config);
     },
-
+    
     me: async () => {
-        const userToken = CookieHelper.get({ key: "token" });
+        const userToken = CookieHelper.get({ key: "access_token" });
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                // Authorization: userToken,
+                Authorization: `Bearer ${userToken}`,
             },
         };
-        return await Fetch.get('/me', config);
+        return await Fetch.get('/auth/me', config);
     },
 
     logout: async (id: string) => {
@@ -174,7 +174,7 @@ export const UserService = {
         if (filter.endsWith('&')) {
             filter = filter.slice(0, -1);
         }
-        return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
+        return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&q=${search || ""}&${filter}`, config);
     },
     getFilteredZoominfoData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: zoominfoFilterState }) => {
         const userToken = CookieHelper.get({ key: "access_token" });
@@ -197,7 +197,7 @@ export const UserService = {
             filter = filter.slice(0, -1);
         }
 
-        return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
+        return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&q=${search || ""}&${filter}`, config);
     },
     getFilteredApolloData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: apolloFilterState }) => {
         const userToken = CookieHelper.get({ key: "access_token" });
@@ -220,7 +220,7 @@ export const UserService = {
             filter = filter.slice(0, -1);
         }
 
-        return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&search=${search || ""}&${filter}`, config);
+        return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&q=${search || ""}&${filter}`, config);
     },
 
 
