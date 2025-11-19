@@ -155,7 +155,6 @@ export default function page() {
 
   useEffect(() => {
     const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
-    console.log("Filter chenged.")
     const parseParam = (param: string | null, separator?: string): string[] =>
       param ? param.split(separator || ',').filter(Boolean) : [];
 
