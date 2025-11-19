@@ -22,15 +22,15 @@ export default function Sidebar() {
     }
 
     const handleLogout = () => {
-        cookieStore?.delete('access_token')
+        CookieHelper?.destroy({key:'access_token'})
         setIsLogoutModalOpen(false);
         router.replace('/login');
+        console.log("Logout....")
     }
 
     useEffect(() => {
         const pathnames = path.split('/');
         setPathName(pathnames?.[pathnames?.length - 1])
-        console.log("Path name : ", path);
     }, [path])
     useEffect(() => {
         const userToken = CookieHelper.get({ key: "access_token" });
