@@ -15,21 +15,19 @@ interface PaginationPageProps {
   totalItems: number;
   itemsPerPage: number;
   onPageChange?: (page: number) => void;
-  isLogin: boolean;
+  currentPage: number;
 }
 
 export function PaginationPage({
   totalItems,
   itemsPerPage,
   onPageChange,
-  isLogin
+  currentPage
 }: PaginationPageProps) {
-  const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
     onPageChange?.(page);
   };
 

@@ -4,6 +4,7 @@ import DynamicTable from "@/helper/DynamicTable"
 import { PaginationPage } from "./PaginationPage"
 import { useEffect, useState } from "react"
 import { CookieHelper } from "@/helper/cookie.helper"
+import { useTotalData } from "@/hooks/TotalDataContext"
 
 type dataType = {
     id: string;
@@ -57,14 +58,10 @@ type propType = {
 
 export default function ZoominfoDataTable({ data, pagination, onPageChange }: propType) {
     const [loading, setLoading] = useState(true);
-    const [isLogin, setIsLogin] = useState(false);
+    const {isLogin} = useTotalData();
     useEffect(() => {
         setLoading(false);
-        const userToken = CookieHelper.get({ key: "access_token" });
-        if (userToken) {
-            setIsLogin(true);
-        }
-    }, [pagination])
+    }, [])
     const columns = [
         {
             label: "Id",
@@ -554,7 +551,7 @@ export default function ZoominfoDataTable({ data, pagination, onPageChange }: pr
                 <DynamicTable data={data} columns={columns} />
             </div>
             <div className="w-full">
-                <PaginationPage totalItems={isLogin?pagination?.total:20} itemsPerPage={pagination?.limit} onPageChange={(page) => { onPageChange(page) }} isLogin={isLogin} />
+                <PaginationPage totalItems={isLogin?pagination?.total:20} itemsPerPage={pagination?.limit} onPageChange={(page) => { onPageChange(page) }} currentPage={pagination?.page} />
             </div>
         </div>
     )
