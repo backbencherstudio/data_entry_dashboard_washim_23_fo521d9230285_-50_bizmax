@@ -49,7 +49,6 @@ export default function Navbar() {
     const { totalData, searchText, updateSearch } = useTotalData();
 
     const handleFileUpload = (file: File) => {
-        console.log('File uploaded:', file);
         // Handle the file upload logic here
         // You can process the CSV file, send it to an API, etc.
         setIsPopupOpen(false);
@@ -58,7 +57,6 @@ export default function Navbar() {
         const reader = new FileReader();
         reader.onload = (e) => {
             const content = e.target?.result;
-            console.log('File content:', content);
         };
         reader.readAsText(file);
     };
@@ -75,8 +73,6 @@ export default function Navbar() {
 
     const handleExport = async (exportSize: number) => {
         try {
-            console.log(`Exporting ${exportSize} records...`);
-
             // Simulate API call for export
             await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -104,7 +100,6 @@ export default function Navbar() {
     useEffect(() => {
         const segments = pathname?.split('?')?.[0]?.split('/').filter(Boolean);
         setCurrentPage(segments?.[segments?.length - 1] || '');
-        console.log("Path : ", segments)
     }, [pathname]);
 
     const handleSearch = (searchValue: string) => {
@@ -126,7 +121,6 @@ export default function Navbar() {
                 textArea.select();
                 try {
                     document.execCommand('copy');
-                    console.log('URL copied to clipboard using fallback');
                 } catch (fallbackErr) {
                     console.error('Fallback copy failed: ', fallbackErr);
                 }

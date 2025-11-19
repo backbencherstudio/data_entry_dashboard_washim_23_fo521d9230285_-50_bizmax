@@ -67,7 +67,6 @@ export const UserService = {
     },
 
     logout: async (id: string) => {
-        console.log("User id : ", id)
         const userToken = CookieHelper.get({ key: "token" });
         const config = {
             headers: {
@@ -254,7 +253,6 @@ export const UserService = {
         if (filter.endsWith('&')) {
             filter = filter.slice(0, -1);
         }
-        console.log("Exporting....")
 
         if(filterType === "sells"){
             return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&${filter}`, config);

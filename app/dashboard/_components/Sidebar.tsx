@@ -25,7 +25,6 @@ export default function Sidebar() {
         CookieHelper?.destroy({key:'access_token'})
         setIsLogoutModalOpen(false);
         router.replace('/login');
-        console.log("Logout....")
     }
 
     useEffect(() => {
