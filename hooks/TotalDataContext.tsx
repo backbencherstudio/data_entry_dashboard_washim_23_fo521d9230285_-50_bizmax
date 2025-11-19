@@ -1,5 +1,6 @@
 'use client'
 
+import { CookieHelper } from '@/helper/cookie.helper';
 import { UserService } from '@/userservice/user.service';
 import { useRouter } from 'next/navigation';
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
@@ -127,9 +128,9 @@ export function TotalDataProvider({ children }: { children: ReactNode }) {
   const getMe = async () => {
     try {
       const res = await UserService?.me();
-      if(res?.data?.success){
+      if (res?.data?.success) {
         setIsLogin(true);
-      }else{
+      } else {
         setIsLogin(false);
       }
     } catch (err) {
@@ -139,7 +140,10 @@ export function TotalDataProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    getMe();
+    const userToken = CookieHelper.get({ key: "access_token" });
+    if (userToken) {
+      getMe();
+    }
   }, [])
 
   return (
