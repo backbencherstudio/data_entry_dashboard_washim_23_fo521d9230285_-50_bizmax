@@ -9,7 +9,7 @@ import { useTotalData } from "@/hooks/TotalDataContext";
 import Loader from "../_components/Loader";
 
 
-type dataType= {
+type dataType = {
   first_name: string;
   last_name: string;
   title: string;
@@ -75,11 +75,11 @@ type dataType= {
   tertiary_email_verification_source: string;
 }
 
-type paginationType={
-    total: number;
-    page: number;
-    pages: number;
-    limit: number;
+type paginationType = {
+  total: number;
+  page: number;
+  pages: number;
+  limit: number;
 }
 
 type FilterState = {
@@ -94,7 +94,7 @@ type FilterState = {
   country: string[];
   city: string[];
   state: string[];
-  annual_revenue:string[];
+  annual_revenue: string[];
 };
 
 const INITIAL_FILTER_STATE: FilterState = {
@@ -114,76 +114,75 @@ const INITIAL_FILTER_STATE: FilterState = {
 
 
 export default function page() {
-    const [data,setData] = useState<dataType[]>([]);
-    const { searchText,totalData, updateTotalData, resetTotalData,updateFilters } = useTotalData();
-    const [pagination,setPagination] = useState<paginationType>({
-        total: 1,
-        page: 1,
-        pages: 1,
-        limit: 20
-    })
-    const [currentPage,setCurrentPage] = useState(1);
-    const [loading,setLoading] = useState(true);
-    const searchParams = useSearchParams();
-    const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
-    const getSalesData= async({page=1,limit=20,search}:{page?:number,limit?:number,search?:string})=>{
-        setLoading(true);
-        try{
-            const res = await UserService?.getFilteredApolloData({
-                page: page,
-                limit: limit,
-                filters,
-                search
-            });
-            if(res?.data?.success){
-                setData(res?.data?.data);
-                setPagination(res?.data?.meta);
-                updateTotalData(res?.data?.meta?.total)
-                setLoading(false);
-            }
-        }catch(err){
-            console.log(err);
-            updateTotalData(0)
-            setLoading(false);
-        }
-    }
-
-    useEffect(()=>{
-        getSalesData({page:currentPage,search:searchText});
-    },[currentPage,filters,searchText])
-
-
-    useEffect(() => {
-        const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
-        console.log("Filter chenged.")
-        // Helper function to parse comma-separated params
-        const parseParam = (param: string | null,separator?:string): string[] =>
-          param ? param.split(separator || ',').filter(Boolean) : [];
-    
-        initialFilters.email = parseParam(searchParams.get('email'));
-        initialFilters.job_titles = parseParam(searchParams.get('jobTitles'));
-        initialFilters.industry = parseParam(searchParams.get('industries'));
-        initialFilters.keyword = parseParam(searchParams.get('keywords'),"|");
-        initialFilters.technologies = parseParam(searchParams.get('technologies'));
-        initialFilters.website = parseParam(searchParams.get('websites'));
-        initialFilters.company_domain = parseParam(searchParams.get('domains'));
-        initialFilters.company_linkedin = parseParam(searchParams.get('companyLinkedin'));
-        initialFilters.country = parseParam(searchParams.get('countries'));
-        initialFilters.city = parseParam(searchParams.get('cities'));
-        initialFilters.state = parseParam(searchParams.get('states'));
-        initialFilters.annual_revenue = parseParam(searchParams.get('annual_revenue'));
-        setCurrentPage(1)
-        setFilters(initialFilters);
-        updateFilters('apollo',initialFilters)
-      }, [searchParams]);
-
-      if(loading){
-        return<Loader />
+  const [data, setData] = useState<dataType[]>([]);
+  const { searchText, totalData, updateTotalData, resetTotalData, updateFilters } = useTotalData();
+  const [pagination, setPagination] = useState<paginationType>({
+    total: 1,
+    page: 1,
+    pages: 1,
+    limit: 20
+  })
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTER_STATE);
+  const getSalesData = async ({ page = 1, limit = 20, search }: { page?: number, limit?: number, search?: string }) => {
+    setLoading(true);
+    try {
+      const res = await UserService?.getFilteredApolloData({
+        page: page,
+        limit: limit,
+        filters,
+        search
+      });
+      if (res?.data?.success) {
+        setData(res?.data?.data);
+        setPagination(res?.data?.meta);
+        updateTotalData(res?.data?.meta?.total)
+        setLoading(false);
       }
+    } catch (err) {
+      console.log(err);
+      updateTotalData(0)
+      setLoading(false);
+    }
+  }
 
-    return(
-        <div className="w-full bg-gray-100 overflow-hidden" style={{height: 'calc(100vh - 56px)'}}>
-            <ApolloDataTable data={data} pagination={pagination} onPageChange={(page)=>setCurrentPage(page)}/>
-        </div>
-    )
+  useEffect(() => {
+    getSalesData({ page: currentPage, search: searchText });
+  }, [currentPage, filters, searchText])
+
+
+  useEffect(() => {
+    const initialFilters: FilterState = { ...INITIAL_FILTER_STATE };
+    console.log("Filter chenged.")
+    const parseParam = (param: string | null, separator?: string): string[] =>
+      param ? param.split(separator || ',').filter(Boolean) : [];
+
+    initialFilters.email = parseParam(searchParams.get('email'));
+    initialFilters.job_titles = parseParam(searchParams.get('jobTitles'));
+    initialFilters.industry = parseParam(searchParams.get('industries'));
+    initialFilters.keyword = parseParam(searchParams.get('keywords'), "|");
+    initialFilters.technologies = parseParam(searchParams.get('technologies'));
+    initialFilters.website = parseParam(searchParams.get('websites'));
+    initialFilters.company_domain = parseParam(searchParams.get('domains'));
+    initialFilters.company_linkedin = parseParam(searchParams.get('companyLinkedin'));
+    initialFilters.country = parseParam(searchParams.get('countries'));
+    initialFilters.city = parseParam(searchParams.get('cities'));
+    initialFilters.state = parseParam(searchParams.get('states'));
+    initialFilters.annual_revenue = parseParam(searchParams.get('annual_revenue'));
+    setCurrentPage(1)
+    setFilters(initialFilters);
+    updateFilters('apollo', initialFilters)
+  }, [searchParams]);
+
+  return (
+    <div className="w-full bg-gray-100 overflow-hidden" style={{ height: 'calc(100vh - 56px)' }}>
+      {loading ?
+        <Loader />
+        :
+        <ApolloDataTable data={data} pagination={pagination} onPageChange={(page) => setCurrentPage(page)} />
+      }
+    </div>
+  )
 }
