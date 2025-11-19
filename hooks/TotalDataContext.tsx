@@ -131,11 +131,10 @@ export function TotalDataProvider({ children }: { children: ReactNode }) {
         setIsLogin(true);
       }else{
         setIsLogin(false);
-        router?.replace('/login')
       }
     } catch (err) {
       console.log(err);
-      router?.replace('/login')
+      setIsLogin(false);
     }
   }
 
