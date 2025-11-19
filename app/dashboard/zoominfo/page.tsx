@@ -96,7 +96,6 @@ export default function sells() {
                 filters,
                 search
             });
-            console.log(res)
             if (res?.data?.success) {
                 setData(res?.data?.data);
                 setPagination(res?.data?.meta)
