@@ -94,7 +94,10 @@ type FilterState = {
   country: string[];
   city: string[];
   state: string[];
-  annual_revenue: string[];
+  min_annual_revenue: string;
+  max_annual_revenue: string;
+  min_employee: string;
+  max_employee: string;
 };
 
 const INITIAL_FILTER_STATE: FilterState = {
@@ -109,7 +112,10 @@ const INITIAL_FILTER_STATE: FilterState = {
   country: [],
   city: [],
   state: [],
-  annual_revenue: [],
+  min_annual_revenue: '',
+  max_annual_revenue: '',
+  min_employee: '',
+  max_employee: ''
 };
 
 
@@ -169,10 +175,12 @@ export default function page() {
     initialFilters.country = parseParam(searchParams.get('countries'));
     initialFilters.city = parseParam(searchParams.get('cities'));
     initialFilters.state = parseParam(searchParams.get('states'));
-    initialFilters.annual_revenue = parseParam(searchParams.get('annual_revenue'));
+    initialFilters.min_annual_revenue = searchParams.get('min_annual_revenue') || '0';
+    initialFilters.max_annual_revenue = searchParams.get('max_annual_revenue') || '0';
+    initialFilters.min_employee = searchParams.get('min_employee') || '0';
+    initialFilters.max_employee = searchParams.get('max_employee') || '0';
     setCurrentPage(1)
     setFilters(initialFilters);
-    updateFilters('apollo', initialFilters)
   }, [searchParams]);
 
   return (
