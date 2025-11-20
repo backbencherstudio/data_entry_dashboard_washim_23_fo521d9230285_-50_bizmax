@@ -15,21 +15,23 @@ import LogoutConfirmationPopup from "@/app/_components/LogoutConfirmationPopup";
 import toast, { Toaster, useToaster } from "react-hot-toast";
 import { CookieHelper } from "@/helper/cookie.helper";
 import { useTotalData } from "@/hooks/TotalDataContext";
+import { MdDelete } from "react-icons/md";
+import DeleteModal from "@/app/_components/DeleteModal";
+import { useRouter } from "next/navigation";
 
 // Custom debounce hook
 function useDebounce(callback: (value: string) => void, delay: number) {
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
     const debouncedCallback = useCallback((value: string) => {
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
         }
-
+        
         timeoutRef.current = setTimeout(() => {
             callback(value);
         }, delay);
     }, [callback, delay]);
-
+    
     // Cleanup timeout on unmount
     useEffect(() => {
         return () => {
@@ -38,7 +40,7 @@ function useDebounce(callback: (value: string) => void, delay: number) {
             }
         };
     }, []);
-
+    
     return debouncedCallback;
 }
 
@@ -46,7 +48,39 @@ export default function Navbar() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
     const { totalData, searchText, updateSearch } = useTotalData();
+
+    
+    const [currentPage, setCurrentPage] = useState<string>('');
+    const [isExportPopupOpen, setIsExportPopupOpen] = useState(false);
+    const [isDeletePopupOpen,setIsDeletePopupOpen] = useState(false);
+    const [exportStatus, setExportStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [search, setSearch] = useState<string>('');
+    
+    // Use the custom debounce hook
+    const debouncedSearch = useDebounce((search: string) => {
+        updateSearch(search);
+    }, 1000);
+    
+    const handleExport = async (exportSize: number) => {
+        try {
+            // Simulate API call for export
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            setExportStatus('success');
+            
+            // Close popup after success
+            setTimeout(() => {
+                setIsExportPopupOpen(false);
+                setExportStatus('idle');
+            }, 1500);
+            
+        } catch (error) {
+            console.error('Export failed:', error);
+            setExportStatus('error');
+        }
+    };
 
     const handleFileUpload = (file: File) => {
         // Handle the file upload logic here
@@ -60,36 +94,7 @@ export default function Navbar() {
         };
         reader.readAsText(file);
     };
-
-    const [currentPage, setCurrentPage] = useState<string>('');
-    const [isExportPopupOpen, setIsExportPopupOpen] = useState(false);
-    const [exportStatus, setExportStatus] = useState<'idle' | 'success' | 'error'>('idle');
-    const [search, setSearch] = useState<string>('');
-
-    // Use the custom debounce hook
-    const debouncedSearch = useDebounce((search: string) => {
-        updateSearch(search);
-    }, 1000);
-
-    const handleExport = async (exportSize: number) => {
-        try {
-            // Simulate API call for export
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            setExportStatus('success');
-
-            // Close popup after success
-            setTimeout(() => {
-                setIsExportPopupOpen(false);
-                setExportStatus('idle');
-            }, 1500);
-
-        } catch (error) {
-            console.error('Export failed:', error);
-            setExportStatus('error');
-        }
-    };
-
+    
     useEffect(() => {
         const userToken = CookieHelper.get({ key: "access_token" });
         if (userToken) {
@@ -150,6 +155,10 @@ export default function Navbar() {
             </div>
             {isLogin ?
                 <div className="flex gap-4">
+                    <button type="button" onClick={() => setIsDeletePopupOpen(true)} className="px-4 flex items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
+                        <MdDelete />
+                        <span>Delete</span>
+                    </button>
                     <Link href="/upload" className="px-4 flex items-center gap-1 py-1 text-sm rounded-md text-white bg-green-500 border border-green-500 cursor-pointer hover:bg-transparent hover:text-green-600 duration-300">
                         <FaFileUpload className="text-xs" />
                         <span>Import</span>
@@ -188,6 +197,8 @@ export default function Navbar() {
                 availableRecords={totalData}
                 exportType="csv"
             />
+
+            <DeleteModal isOpen={isDeletePopupOpen} onClose={()=>setIsDeletePopupOpen(false)} onDelete={()=>{setIsDeletePopupOpen(false);router.push(pathname)}}/>
         </div>
     )
 }

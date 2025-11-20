@@ -39,22 +39,25 @@ type apolloFilterState = {
     country: string[];
     city: string[];
     state: string[];
-    annual_revenue: string[];
+    min_annual_revenue: string;
+    max_annual_revenue: string;
+    min_employee: string;
+    max_employee: string;
 };
 
 export const UserService = {
     login: async ({ email, password }: { email: string, password: string }, context = null) => {
         // const userToken = CookieHelper.get({ key: "token", context });
-        
+
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
-        
+
         return await Fetch.post(`/auth/login`, { email: email, password: password }, config);
     },
-    
+
     me: async () => {
         const userToken = CookieHelper.get({ key: "access_token" });
         const config = {
@@ -150,9 +153,6 @@ export const UserService = {
         if (filter === 'states') {
             return await Fetch.get(`/leads/state?search=${search}`, config);
         }
-        if (filter === 'annual_revenue') {
-            return await Fetch.get(`/leads/annual_revenue?search=${search}`, config);
-        }
     },
     getFilteredSalesData: async ({ search, page, limit, filters }: { search?: string, page: number, limit: number, filters: salesFilterState }) => {
         const userToken = CookieHelper.get({ key: "access_token" });
@@ -209,11 +209,17 @@ export const UserService = {
 
         let filter = "";
         Object.entries(filters).forEach(item => {
-            item[1]?.forEach(entry => {
-                if (entry) {
-                    filter += `${item[0]}=${entry?.trim()}&`;
+            if (Array.isArray(item[1])) {
+                item[1]?.forEach(entry => {
+                    if (entry) {
+                        filter += `${item[0]}=${entry?.trim()}&`;
+                    }
+                })
+            } else {
+                if (Number(item[1]) > 0) {
+                    filter += `${item[0]}=${item[1]?.trim()}&`;
                 }
-            })
+            }
         });
         if (filter.endsWith('&')) {
             filter = filter.slice(0, -1);
@@ -233,7 +239,7 @@ export const UserService = {
         return await Fetch.post('/leads/import', data, config);
     },
 
-    getExportData: async (page:number,limit:number,filterType:string,filters:apolloFilterState | salesFilterState | zoominfoFilterState) => {
+    getExportData: async (page: number, limit: number, filterType: string, filters: apolloFilterState | salesFilterState | zoominfoFilterState) => {
         const userToken = CookieHelper.get({ key: "access_token" });
         const config = {
             headers: {
@@ -244,24 +250,39 @@ export const UserService = {
 
         let filter = "";
         Object.entries(filters).forEach(item => {
-            item[1]?.forEach(entry => {
-                if (entry) {
-                    filter += `${item[0]}=${entry?.trim()}&`;
-                }
-            })
-        });
+            if (Array.isArray(item[1])) {
+                item[1]?.forEach(entry => {
+                    if (entry) {
+                        filter += `${item[0]}=${entry?.trim()}&`;
+                    }
+                })
+            } else {
+                filter += `${item[0]} = ${item[1]}`
+            }
+        })
         if (filter.endsWith('&')) {
             filter = filter.slice(0, -1);
         }
 
-        if(filterType === "sells"){
+        if (filterType === "sells") {
             return await Fetch.get(`/leads/sales-navigator?page=${page}&limit=${limit}&${filter}`, config);
         }
-        if(filterType === "zoominfo"){
+        if (filterType === "zoominfo") {
             return await Fetch.get(`/leads/zoominfo?page=${page}&limit=${limit}&${filter}`, config);
         }
-        if(filterType === "apollo"){
+        if (filterType === "apollo") {
             return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&${filter}`, config);
         }
+    },
+
+    deleteData: async({data}:{data:{type:string;startDate:string;endDate:string}})=>{
+        const userToken = CookieHelper.get({ key: "access_token" });
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userToken}`,
+            },
+            data
+        };
+        return await Fetch.delete('/leads/delete-by-range', config);
     }
 }

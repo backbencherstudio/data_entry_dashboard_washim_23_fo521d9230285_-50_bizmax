@@ -1,87 +1,77 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 
 interface PriceRangeSelectorProps {
-  minPrice?: number;
-  maxPrice?: number;
+  minPrice?: string;
+  maxPrice?: string;
   step?: number;
   currency?: string;
-  onPriceChange?: (range: [number, number]) => void;
+  onPriceChange: (range: [string, string]) => void;
   className?: string;
   debounceMs?: number;
+  title: string;
 }
 
 export default function PriceRangeSelector({
-  minPrice = 0,
-  maxPrice = 0,
-  step = 0,
+  minPrice = '',
+  maxPrice = '',
+  step = 1,
   currency = "$",
   onPriceChange,
   className = "",
-  debounceMs = 300,
+  debounceMs = 800,
+  title = ''
 }: PriceRangeSelectorProps) {
-  const [range, setRange] = useState<[number, number]>([minPrice, maxPrice]);
+  const [minValue, setMinValue] = useState<string>(minPrice);
+  const [maxValue, setMaxValue] = useState<string>(maxPrice);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  const handleMinInputChange = (value: string) => {
+    setMinValue(value);
+    debouncedPriceChange([value, maxValue]);
+  };
 
-  const debouncedPriceChange = useCallback((newRange: [number, number]) => {
+  const handleMaxInputChange = (value: string) => {
+    setMaxValue(value);
+    debouncedPriceChange([minValue, value]);
+  };
+
+  const debouncedPriceChange = useCallback((newRange: [string, string]) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
     timeoutRef.current = setTimeout(() => {
-      onPriceChange?.(newRange);
+      onPriceChange(newRange);
     }, debounceMs);
   }, [onPriceChange, debounceMs]);
 
-  const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Only allow numbers and empty string
-    const value = e.target.value;
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
-    // If empty, set to minPrice
-    if (value === "") {
-      const newRange: [number, number] = [minPrice, range[1]];
-      setRange(newRange);
-      debouncedPriceChange(newRange);
-      return;
+
+  useEffect(()=>{
+    if(minPrice){
+      setMinValue(minPrice)
     }
-
-    // Only proceed if value contains only numbers
-    if (/^\d+$/.test(value)) {
-      const numValue = Math.min(Number(value), range[1] - step);
-      const newRange: [number, number] = [numValue, range[1]];
-      setRange(newRange);
-      debouncedPriceChange(newRange);
+    if(maxPrice){
+      setMaxValue(maxPrice)
     }
-  };
-
-  const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Only allow numbers and empty string
-    const value = e.target.value;
-
-    // If empty, set to maxPrice
-    if (value === "") {
-      const newRange: [number, number] = [range[0], Number(value)];
-      setRange(newRange);
-      debouncedPriceChange(newRange);
-      return;
-    }
-
-    // Only proceed if value contains only numbers
-    if (/^\d+$/.test(value)) {
-      const numValue = Math.max(Number(value), range[0] + step);
-      const newRange: [number, number] = [range[0], numValue];
-      setRange(newRange);
-      debouncedPriceChange(newRange);
-    }
-  };
+  },[minPrice,maxPrice])
 
   return (
     <div className={`w-full max-w-md ${className}`}>
       <div className="space-y-2 mb-4">
-        <h3 className="text-lg font-semibold">Annual Revenue</h3>
+        <h3 className="text-lg font-semibold">{title}</h3>
         <p className="text-sm text-muted-foreground">
-          Set your preferred revenue range
+          Set your preferred range
         </p>
       </div>
 
@@ -97,11 +87,10 @@ export default function PriceRangeSelector({
             <input
               id="min-price"
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              value={range[0]}
-              onChange={handleMinInputChange}
+              value={minValue}
+              onChange={(e) => handleMinInputChange(e.target.value)}
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pl-8 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder={minPrice}
             />
           </div>
         </div>
@@ -117,11 +106,10 @@ export default function PriceRangeSelector({
             <input
               id="max-price"
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              value={range[1]}
-              onChange={handleMaxInputChange}
+              value={maxValue}
+              onChange={(e) => handleMaxInputChange(e.target.value)}
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pl-8 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder={maxPrice}
             />
           </div>
         </div>
