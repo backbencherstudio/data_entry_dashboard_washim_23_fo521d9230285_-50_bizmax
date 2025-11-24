@@ -283,6 +283,11 @@ export const UserService = {
             },
             data
         };
-        return await Fetch.delete('/leads/delete-by-range', config);
+        if(data.type==="APOLLO")
+        return await Fetch.delete(`/leads/apollo/delete?startDate=${data?.startDate}&endDate=${data?.endDate}`, config);
+        if(data.type==="ZOOMINFO")
+        return await Fetch.delete(`/leads/zoominfo/delete?startDate=${data?.startDate}&endDate=${data?.endDate}`, config); 
+        if(data.type==="SALES_NAVIGATOR")
+        return await Fetch.delete(`/leads/sales-navigator/delete?startDate=${data?.startDate}&endDate=${data?.endDate}`, config);
     }
 }
