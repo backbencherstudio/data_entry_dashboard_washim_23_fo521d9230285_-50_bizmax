@@ -274,7 +274,6 @@ export const UserService = {
             return await Fetch.get(`/leads/apollo?page=${page}&limit=${limit}&${filter}`, config);
         }
     },
-
     deleteData: async({data}:{data:{type:string;startDate:string;endDate:string}})=>{
         const userToken = CookieHelper.get({ key: "access_token" });
         const config = {
@@ -289,5 +288,13 @@ export const UserService = {
         return await Fetch.delete(`/leads/zoominfo/delete?startDate=${data?.startDate}&endDate=${data?.endDate}`, config); 
         if(data.type==="SALES_NAVIGATOR")
         return await Fetch.delete(`/leads/sales-navigator/delete?startDate=${data?.startDate}&endDate=${data?.endDate}`, config);
-    }
+    },
+    sendResetOTP: async({email}:{email: string})=>{
+        return await Fetch.post('/auth/forgot-password', {email});
+    },
+    
+    resetPassword: async({email, otp, password}:{email: string, otp: string, password: string})=>{
+        return await Fetch.post('/auth/reset-password', {email, token:otp, password});
+    },
+
 }
