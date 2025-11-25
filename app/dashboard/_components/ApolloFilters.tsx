@@ -116,7 +116,7 @@ export default function ApolloFilters() {
       const res = await UserService?.getFilters({ filter: searchItem?.key || search, search: searchItem?.value });
       if (res?.data?.success) {
         if (searchItem?.key === "jobTitles" || search === "jobTitles") {
-          setJobTitles(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.job_titles })));
+          setJobTitles(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.title })));
         }
         if (searchItem?.key === "company_domain" || search === "company_domain") {
           setCompanyDomain(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.website })));
