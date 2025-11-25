@@ -83,7 +83,7 @@ type paginationType = {
 }
 
 type FilterState = {
-  email: string[];
+  email_status: string[];
   job_titles: string[];
   industry: string[];
   keyword: string[];
@@ -101,7 +101,7 @@ type FilterState = {
 };
 
 const INITIAL_FILTER_STATE: FilterState = {
-  email: [],
+  email_status: [],
   job_titles: [],
   industry: [],
   keyword: [],
@@ -164,7 +164,7 @@ export default function page() {
     const parseParam = (param: string | null, separator?: string): string[] =>
       param ? param.split(separator || ',').filter(Boolean) : [];
 
-    initialFilters.email = parseParam(searchParams.get('email'));
+    initialFilters.email_status = parseParam(searchParams.get('email'));
     initialFilters.job_titles = parseParam(searchParams.get('jobTitles'));
     initialFilters.industry = parseParam(searchParams.get('industries'));
     initialFilters.keyword = parseParam(searchParams.get('keywords'), "|");
