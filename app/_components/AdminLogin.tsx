@@ -97,12 +97,7 @@ export default function AdminLogin({ onForgotPassword }: propType) {
     };
 
     const handleForgotPassword = () => {
-        if (!formData.email) {
-            toast.error('Please enter your email address first');
-            return;
-        }
         onForgotPassword(formData?.email);
-        toast.success('Forgot password initiated');
     };
 
     return (
