@@ -4,6 +4,7 @@ import { X, Download, Database, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useTotalData } from '@/hooks/TotalDataContext';
 import { UserService } from '@/userservice/user.service';
 import { saveAs } from 'file-saver';
+import { all } from 'axios';
 
 interface ExportDataPopupProps {
     isOpen: boolean;
@@ -90,6 +91,22 @@ export default function ExportDataPopup({
         }
     };
 
+    // Calculate progress based on records fetched (0-70%), processing (70-85%), downloading (85-100%)
+    const calculateProgress = (recordsFetched: number, totalRecords: number, stage: 'fetching' | 'processing' | 'downloading') => {
+        const fetchingWeight = 70;
+        const processingWeight = 15;
+        const downloadingWeight = 15;
+
+        if (stage === 'fetching') {
+            return Math.min(fetchingWeight, (recordsFetched / totalRecords) * fetchingWeight);
+        } else if (stage === 'processing') {
+            return fetchingWeight + processingWeight;
+        } else if (stage === 'downloading') {
+            return fetchingWeight + processingWeight + downloadingWeight;
+        }
+        return 0;
+    };
+
     const getExportData = async (
         page: number,
         limit: number,
@@ -109,102 +126,94 @@ export default function ExportDataPopup({
         }
     }
 
+    const fetchDataInBatches = async (
+        totalRecords: number,
+        filterType: string,
+        filters: any,
+        pagePrefix: string
+    ): Promise<void> => {
+        let allData: any[] = [];
+        let page = 1;
+        let remainingRecords = totalRecords;
+        let fileNumber = 1;
+        const dataSize = 50000;
+        const maxRecordsPerFile = 250000;
+
+        while (remainingRecords > 0) {
+            const currentBatchSize = Math.min(dataSize, remainingRecords);
+            const batchData = await getExportData(page, dataSize, currentBatchSize, filterType, filters);
+            allData = [...allData, ...batchData];
+
+            // Auto-split large exports into multiple files
+            if (allData.length >= maxRecordsPerFile) {
+                const csvContent = convertToCSV(allData);
+                const timestamp = new Date().getTime();
+                const filename = `${pagePrefix}-export-${timestamp}-part${fileNumber}.csv`;
+                downloadCSV(csvContent, filename);
+                allData = [];
+                fileNumber += 1;
+            }
+
+            page += 1;
+            remainingRecords -= batchData.length;
+
+            // Update progress based on actual records fetched
+            const totalFetched = totalRecords - remainingRecords;
+            const fetchProgress = calculateProgress(totalFetched, totalRecords, 'fetching');
+            updateProgress('fetching', fetchProgress);
+
+            if (batchData.length < currentBatchSize) break;
+        }
+
+        // Download remaining data if any
+        if (allData.length > 0) {
+            updateProgress('processing', calculateProgress(0, 0, 'processing'));
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const csvContent = convertToCSV(allData);
+            updateProgress('downloading', calculateProgress(0, 0, 'downloading'));
+            await new Promise(resolve => setTimeout(resolve, 200));
+
+            const timestamp = new Date().getTime();
+            const filename = fileNumber > 1 
+                ? `${pagePrefix}-export-${timestamp}-part${fileNumber}.csv`
+                : `${pagePrefix}-export-${timestamp}.csv`;
+            downloadCSV(csvContent, filename);
+        }
+    };
+
     const handleExport = async () => {
         setIsExporting(true);
         setExportProgress(0);
         setExportStatus('fetching');
 
         try {
-            let allData: any[] = [];
             const totalRecords = selectedOption === 'all'
                 ? Math.min(maxRecords, availableRecords)
                 : exportSize;
 
-            updateProgress('fetching', 10);
+            updateProgress('fetching', 0);
 
             let filterType = '';
             let filters = {};
 
+            // Determine filter type and filters based on active page
             if (activePage === 'sells') {
                 filterType = 'sells';
                 filters = salesFilters;
-                let page = 1;
-                let remainingRecords = totalRecords;
-
-                while (remainingRecords > 0) {
-                    const currentBatchSize = Math.min(5000, remainingRecords);
-                    const batchData = await getExportData(page, 5000, currentBatchSize, filterType, filters);
-                    allData = [...allData, ...batchData];
-
-                    page += 1;
-                    remainingRecords -= batchData.length;
-
-                    const fetchedProgress = 10 + Math.min(40, (allData.length / totalRecords) * 40);
-                    updateProgress('fetching', fetchedProgress);
-
-                    if (batchData.length < currentBatchSize) break;
-                }
-            }
-            else if (activePage === 'zoominfo') {
+            } else if (activePage === 'zoominfo') {
                 filterType = 'zoominfo';
                 filters = zoominfoFilters;
-                let page = 1;
-                let remainingRecords = totalRecords;
-
-                while (remainingRecords > 0) {
-                    const currentBatchSize = Math.min(5000, remainingRecords);
-                    const batchData = await getExportData(page, 5000, currentBatchSize, filterType, filters);
-                    allData = [...allData, ...batchData];
-
-                    page += 1;
-                    remainingRecords -= batchData.length;
-
-                    const fetchedProgress = 10 + Math.min(40, (allData.length / totalRecords) * 40);
-                    updateProgress('fetching', fetchedProgress);
-
-                    if (batchData.length < currentBatchSize) break;
-                }
-            }
-            else if (activePage === 'dashboard') {
+            } else if (activePage === 'dashboard') {
                 filterType = 'apollo';
                 filters = apolloFilters;
-                let page = 1;
-                let remainingRecords = totalRecords;
-
-                while (remainingRecords > 0) {
-                    const currentBatchSize = Math.min(5000, remainingRecords);
-                    const batchData = await getExportData(page, 5000, currentBatchSize, filterType, filters);
-                    allData = [...allData, ...batchData];
-
-                    page += 1;
-                    remainingRecords -= batchData.length;
-
-                    const fetchedProgress = 10 + Math.min(40, (allData.length / totalRecords) * 40);
-                    updateProgress('fetching', fetchedProgress);
-
-                    if (batchData.length < currentBatchSize) break;
-                }
             }
 
-            if (allData.length === 0) {
-                updateProgress('completed', 100);
-                return;
-            }
+            // Use unified batch fetching function
+            await fetchDataInBatches(totalRecords, filterType, filters, activePage);
 
-            updateProgress('processing', 60);
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            const csvContent = convertToCSV(allData);
-            updateProgress('downloading', 90);
-
-            await new Promise(resolve => setTimeout(resolve, 200));
-
-            const timestamp = new Date().getTime();
-            const filename = `${activePage}-export-${timestamp}.csv`;
-            downloadCSV(csvContent, filename);
             updateProgress('completed', 100);
-
-            onExport(allData.length);
+            onExport(totalRecords);
 
         } catch (error) {
             console.error('Export failed:', error);
