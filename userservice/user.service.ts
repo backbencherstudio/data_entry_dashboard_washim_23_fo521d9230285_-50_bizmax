@@ -28,7 +28,7 @@ type zoominfoFilterState = {
     keyword: string[];
 };
 type apolloFilterState = {
-    email: string[];
+    email_status: string[];
     job_titles: string[];
     industry: string[];
     keyword: string[];
