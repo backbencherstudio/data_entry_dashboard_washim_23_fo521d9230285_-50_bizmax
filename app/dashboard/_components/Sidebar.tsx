@@ -13,10 +13,9 @@ import { useTotalData } from "@/hooks/TotalDataContext";
 export default function Sidebar() {
     const router = useRouter();
     const path = usePathname();
-    const { totalData } = useTotalData();
+    const { totalData,isLogin } = useTotalData();
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
     const [pathName, setPathName] = useState<string>('');
-    const [isLogin, setIsLogin] = useState(false);
     const handleLogoutModal = () => {
         setIsLogoutModalOpen(true);
     }
@@ -31,12 +30,6 @@ export default function Sidebar() {
         const pathnames = path.split('/');
         setPathName(pathnames?.[pathnames?.length - 1])
     }, [path])
-    useEffect(() => {
-        const userToken = CookieHelper.get({ key: "access_token" });
-        if (userToken) {
-            setIsLogin(true)
-        }
-    }, [])
 
     return (
         <div className={`w-[240px] h-screen overflow-hidden grid ${isLogin?"grid-rows-[48px_1fr_70px]":"grid-rows-[48px_1fr_150px]"}`}>

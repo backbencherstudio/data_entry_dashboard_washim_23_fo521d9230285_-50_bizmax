@@ -97,7 +97,7 @@ export default function SellsFilters() {
       const res = await UserService?.getFilters({ filter: searchItem?.key || search, search: searchItem?.value });
       if (res?.data?.success) {
         if (searchItem?.key === "jobTitles" || search === "jobTitles") {
-          setJobTitles(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.job_title })));
+          setJobTitles(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.title })));
         }
         if (searchItem?.key === "domains" || search === "domains") {
           setCompanyDomain(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.company_domain })));

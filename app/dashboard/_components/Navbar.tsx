@@ -46,10 +46,9 @@ function useDebounce(callback: (value: string) => void, delay: number) {
 
 export default function Navbar() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
-    const { totalData, searchText, updateSearch } = useTotalData();
+    const { totalData, searchText, updateSearch,isLogin } = useTotalData();
 
     
     const [currentPage, setCurrentPage] = useState<string>('');
@@ -94,13 +93,6 @@ export default function Navbar() {
         };
         reader.readAsText(file);
     };
-    
-    useEffect(() => {
-        const userToken = CookieHelper.get({ key: "access_token" });
-        if (userToken) {
-            setIsLogin(true);
-        }
-    }, [])
 
     useEffect(() => {
         const segments = pathname?.split('?')?.[0]?.split('/').filter(Boolean);
