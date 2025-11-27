@@ -158,7 +158,7 @@ export default function ZoominfoDataTable({ data, pagination, onPageChange }: pr
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
                     {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {"[" + accessor + "]"}
+                        {accessor?.slice(1,-1)}
                     </span>
                         :
                         <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
@@ -214,7 +214,7 @@ export default function ZoominfoDataTable({ data, pagination, onPageChange }: pr
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
                     {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {"[" + accessor + "]"}
+                        {accessor?.slice(1,-1)}
                     </span>
                         :
                         <span className="w-full h-full bg-[#cebcbc] blur-xs">-</span>}
@@ -437,7 +437,7 @@ export default function ZoominfoDataTable({ data, pagination, onPageChange }: pr
             formatter: (accessor: string, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
                     <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {accessor?.split(',')?.[0]}
+                        {accessor?.split(',')?.[0]?.slice(1)}
                     </span>
                     {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
                         +{accessor?.split(',')?.length}
@@ -452,7 +452,7 @@ export default function ZoominfoDataTable({ data, pagination, onPageChange }: pr
             formatter: (accessor: string, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
                     <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {accessor?.split(',')?.[0]}
+                        {accessor?.split(',')?.[0]?.slice(1)}
                     </span>
                     {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
                         +{accessor?.split(',')?.length}
@@ -512,7 +512,7 @@ export default function ZoominfoDataTable({ data, pagination, onPageChange }: pr
             formatter: (accessor: string, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
                     <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {accessor?.split(',')?.[0]}
+                        {accessor?.split(',')?.[0]?.slice(2,-2)}
                     </span>
                     {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
                         +{accessor?.split(',')?.length}
@@ -527,7 +527,7 @@ export default function ZoominfoDataTable({ data, pagination, onPageChange }: pr
             formatter: (accessor: string, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
                     <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
-                        {accessor?.split(',')?.[0]}
+                        {accessor?.slice(2,-2)?.split(',')?.[0]}
                     </span>
                     {accessor?.split(',')?.length > 1 && <span className="text-[10px] px-1 bg-gray-300 rounded-sm font-medium">
                         +{accessor?.split(',')?.length}

@@ -124,7 +124,7 @@ export default function sells() {
         initialFilters.company_website = parseParam(searchParams.get('company_website'));
         initialFilters.company_industry = parseParam(searchParams.get('industry'));
         initialFilters.keyword = parseParam(searchParams.get('keywords'));
-        initialFilters.company_size = parseParam(searchParams.get('employee_size'), '|');
+        initialFilters.company_size = parseParam(searchParams.get('company_size'), '|');
         initialFilters.revenue_range = parseParam(searchParams.get('company_revenue'));
         initialFilters.company_location_text = parseParam(searchParams.get('location'), "|");
         setCurrentPage(1)

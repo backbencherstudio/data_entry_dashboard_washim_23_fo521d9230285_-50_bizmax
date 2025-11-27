@@ -2,7 +2,7 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, useCallback, useMemo, ReactElement } from "react";
-import EmailFilter from "./EmailFilter"
+import ZoominfoEmailFilter from "@/app/_components/ZoominfoEmailFilter";
 import Filters from "@/app/_components/Filters"
 import { VscSymbolKeyword } from "react-icons/vsc";
 import { GiArcheryTarget, GiModernCity, GiProfit } from "react-icons/gi";
@@ -20,7 +20,7 @@ type FilterState = {
   leadTitle: string[];
   companyWebsite: string[];
   industry: string[];
-  employeeSize: string[];
+  companySize: string[];
   companyRevenue: string[];
   location: string[];
   keywords: string[];
@@ -31,7 +31,7 @@ const INITIAL_FILTER_STATE: FilterState = {
   leadTitle: [],
   companyWebsite: [],
   industry: [],
-  employeeSize: [],
+  companySize: [],
   companyRevenue: [],
   location: [],
   keywords: []
@@ -154,7 +154,7 @@ export default function ZoominfoFilters() {
     initialFilters.companyWebsite = parseParam(searchParams.get('company_website'));
     initialFilters.industry = parseParam(searchParams.get('industry'));
     initialFilters.keywords = parseParam(searchParams.get('keywords'));
-    initialFilters.employeeSize = parseParam(searchParams.get('employee_size'),"|");
+    initialFilters.companySize = parseParam(searchParams.get('company_size'),"|");
     initialFilters.companyRevenue = parseParam(searchParams.get('company_revenue'));
     initialFilters.location = parseParam(searchParams.get('location'),"|");
     setFilters(initialFilters);
@@ -171,7 +171,7 @@ export default function ZoominfoFilters() {
     if (filters.companyRevenue.length > 0) params.set('company_revenue', filters.companyRevenue.join(','));
     if (filters.industry.length > 0) params.set('industry', filters.industry.join(','));
     if (filters.keywords.length > 0) params.set('keywords', filters.keywords.join(','));
-    if (filters.employeeSize.length > 0) params.set('employee_size', filters.employeeSize.join('|'));
+    if (filters.companySize.length > 0) params.set('company_size', filters.companySize.join('|'));
     if (filters.location.length > 0) params.set('location', filters.location.join('|'));
 
     // Update URL without page refresh - use replace instead of push to avoid adding to history
@@ -261,14 +261,14 @@ export default function ZoominfoFilters() {
     },
     {
       type: 'regular',
-      key: 'employeeSize',
+      key: 'companySize',
       props: {
         data: companySize,
-        title: "Emloyee Size",
-        subTitle: "Employee size",
+        title: "Company Size",
+        subTitle: "Company Size",
         Icon: <FaUsersRays />,
-        selectedData: filters.employeeSize,
-        onUpDate: (data: string[]) => updateFilter('employeeSize', data)
+        selectedData: filters.companySize,
+        onUpDate: (data: string[]) => updateFilter('companySize', data)
       }
     },
     {
@@ -289,7 +289,7 @@ export default function ZoominfoFilters() {
   const renderFilterComponent = (config: FilterConfig) => {
     switch (config.type) {
       case 'email':
-        return <EmailFilter key={config.key} {...config.props} />;
+        return <ZoominfoEmailFilter key={config.key} {...config.props} />;
       case 'regular':
         return <Filters key={config.key} {...config.props} onSearch={(val) => setSearchItem({ key: config?.key, value: val })} />;
       default:
