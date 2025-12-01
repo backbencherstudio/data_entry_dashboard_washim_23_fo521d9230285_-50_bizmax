@@ -106,7 +106,7 @@ export default function SellsFilters() {
           setLinkedInUrl(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.url })));
         }
         if (searchItem?.key === "location" || search === "location") {
-          setLocation(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.city })));
+          setLocation(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.location })));
         }
         if (searchItem?.key === "emailFirst" || search === "emailFirst") {
           setEmailFirst(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.email_first })));
