@@ -82,7 +82,7 @@ export default function Filters({
   // }
 
   return (
-    <div className={`${open ? "border border-gray-300" : "border-b border-gray-300"} w-full duration-200`}>
+    <div className={`${open ? "border border-gray-300" : "border-b border-gray-300"} w-full duration-200 relative`}>
       <button
         type="button"
         className={`flex cursor-pointer px-4 pt-4 justify-between items-center w-full outline-none ${open ? "text-blue-300" : "text-gray-500"}`}
@@ -151,6 +151,7 @@ export default function Filters({
           </PopoverContent>
         </Popover>
       </div>
+      {selectedData?.length > 0 &&<button type="button" className="border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-150 px-1.5 leading-0 py-2.5 cursor-pointer text-xs rounded-lg absolute top-2.5 right-2" onClick={()=>onUpDate([])}>Clear</button>}
     </div>
   );
 }

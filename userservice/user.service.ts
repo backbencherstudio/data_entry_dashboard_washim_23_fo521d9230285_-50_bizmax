@@ -97,7 +97,7 @@ export const UserService = {
             return await Fetch.get(`/leads/linkedin_id?search=${search}`, config);
         }
         if (filter === 'location') {
-            return await Fetch.get(`/leads/city2?search=${search}`, config);
+            return await Fetch.get(`/leads/location?search=${search}`, config);
         }
         if (filter === 'emailFirst') {
             return await Fetch.get(`/leads/email_first?search=${search}`, config);

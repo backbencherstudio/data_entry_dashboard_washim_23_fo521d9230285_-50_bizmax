@@ -52,7 +52,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (first_name: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {first_name}
                     </span>
                 </div>
@@ -64,7 +64,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (last_name: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {last_name}
                     </span>
                 </div>
@@ -76,7 +76,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (title: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {title}
                     </span>
                 </div>
@@ -88,7 +88,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                 </div>
@@ -100,7 +100,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -114,7 +114,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -128,7 +128,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -142,7 +142,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -156,7 +156,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -170,7 +170,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -184,7 +184,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -194,11 +194,11 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
         },
         {
             label: "Location",
-            accessor: "city",
+            accessor: "location",
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -212,7 +212,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor}
                     </span>
                         :
@@ -226,7 +226,7 @@ export default function SellsDataTable({ data, pagination, onPageChange }: propT
             width: "160px",
             formatter: (accessor: any, row: any) => (
                 <div className='flex items-center gap-2 p-4'>
-                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-[24px]'>
+                    {isLogin ? <span className='text-[#111827] text-nowrap font-normal text-[12px] leading-6'>
                         {accessor?.split('T')?.[0]}
                     </span>
                         :
