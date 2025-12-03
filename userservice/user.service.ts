@@ -12,7 +12,7 @@ type salesFilterState = {
     job_title: string[];
     company_domain: string[];
     urls: string[];
-    city: string[];
+    location: string[];
     email_first: string[];
     email_second: string[];
 };
