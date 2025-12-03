@@ -38,7 +38,7 @@ type FilterState = {
     job_title: string[];
     company_domain: string[];
     urls: string[];
-    city: string[];
+    location: string[];
     email_first: string[];
     email_second: string[];
 };
@@ -50,7 +50,7 @@ const INITIAL_FILTER_STATE: FilterState = {
     urls: [],
     email_first: [],
     email_second: [],
-    city: [],
+    location: [],
 };
 
 
@@ -104,7 +104,7 @@ export default function sells() {
         initialFilters.job_title = parseParam(search.get('jobTitles'));
         initialFilters.company_domain = parseParam(search.get('domains'));
         initialFilters.urls = parseParam(search.get('personalLinkedinUrl'));
-        initialFilters.city = parseParam(search.get('location'), '|');
+        initialFilters.location = parseParam(search.get('location'), '|');
         initialFilters.email_first = parseParam(search.get('email_first'));
         initialFilters.email_second = parseParam(search.get('email_second'));
         setCurrentPage(1)
