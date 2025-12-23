@@ -32,7 +32,7 @@ export default function Sidebar() {
     }, [path])
 
     return (
-        <div className={`w-[240px] h-screen overflow-hidden grid ${isLogin?"grid-rows-[48px_1fr_70px]":"grid-rows-[48px_1fr_150px]"}`}>
+        <div className={`w-60 h-screen overflow-hidden grid ${isLogin?"grid-rows-[48px_1fr_70px]":"grid-rows-[48px_1fr_150px]"}`}>
             <div className="bg-[#ECF3FE] text-gray-900 px-4 py-[13px] text-xl font-semibold">
                 Total: <span className="font-medium">{totalData}</span>
             </div>

@@ -88,7 +88,7 @@ export const UserService = {
             },
         };
         if (filter === 'jobTitles') {
-            return await Fetch.get(`/leads/job_titles?search=${search}`, config);
+            return await Fetch.get(`/leads/job_title?search=${search}`, config);
         }
         if (filter === 'domains') {
             return await Fetch.get(`/leads/company_domain?search=${search}`, config);
