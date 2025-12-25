@@ -113,10 +113,10 @@ export default function ApolloFilters() {
 
   const getFilters = async (search: string) => {
     try {
-      const res = await UserService?.getFilters({ filter: searchItem?.key || search, search: searchItem?.value });
+      const res = await UserService?.getFilters({ filter: searchItem?.key || search, search: searchItem?.value,isApollo:true });
       if (res?.data?.success) {
         if (searchItem?.key === "jobTitles" || search === "jobTitles") {
-          setJobTitles(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.job_title })));
+          setJobTitles(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.title })));
         }
         if (searchItem?.key === "company_domain" || search === "company_domain") {
           setCompanyDomain(res?.data?.data?.map((item: any) => ({ id: item?.id, name: item?.website })));

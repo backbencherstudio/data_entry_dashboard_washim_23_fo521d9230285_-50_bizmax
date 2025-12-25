@@ -79,7 +79,7 @@ export const UserService = {
         };
         return await Fetch.post('/logout', { userid: id }, config);
     },
-    getFilters: async ({ filter, search }: { filter: string, search?: string }) => {
+    getFilters: async ({ filter, search,isApollo=false }: { filter: string, search?: string, isApollo?:boolean }) => {
         const userToken = CookieHelper.get({ key: "token" });
         const config = {
             headers: {
@@ -87,7 +87,10 @@ export const UserService = {
                 // Authorization: userToken,
             },
         };
-        if (filter === 'jobTitles') {
+        if (filter === 'jobTitles' && isApollo) {
+            return await Fetch.get(`/leads/job_titles?search=${search}`, config);
+        }
+        if (filter === 'jobTitles' && !isApollo) {
             return await Fetch.get(`/leads/job_title?search=${search}`, config);
         }
         if (filter === 'domains') {
